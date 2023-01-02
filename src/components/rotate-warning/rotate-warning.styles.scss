@@ -1,0 +1,25 @@
+.screen-rotate-warning {
+    position: 'absolute';
+    top: 0;
+    width: '810px';
+    height: '1200px';
+    font-size: '30px';
+    color: 'red';
+    z-index: 1000;
+    opacity: 0.7;
+    padding-top: '400px';
+    text-align: 'center';
+    background-color: 'white';
+}
+
+@media screen and (orientation:portrait) {
+    .screen-rotate-warning {
+        display: block;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .screen-rotate-warning {
+        display: none;
+    }
+}
