@@ -1,11 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import RotateWarning from './components/rotate-warning/rotate-warning.component';
+import World from './components/world/world.component';
 
 function App() {
   return (
     <div>
-        <RotateWarning/>
-        <World/>
+        <RotateWarning />
+        <World />
     </div>
   );
 }
