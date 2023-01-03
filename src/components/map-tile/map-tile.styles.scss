@@ -1,0 +1,93 @@
+.tile {
+    display: inline-flex;
+    background-color: black;  
+}
+
+.eagle {
+    background-image: url('../../assets/tiles/eagle.png');
+}
+  
+.flag {
+    background-image: url('../../assets/tiles/flag.png');
+}
+
+.rock {
+    background-image: url('../../assets/tiles/rock.png');
+    background-repeat: no-repeat;
+}
+
+.wall {
+    background-image: url('../../assets/tiles/wall.png');
+    background-repeat: no-repeat;
+}
+
+.star-wall{
+    background-image: url('../../assets/tiles/wall.png');
+    background-repeat: no-repeat; 
+}
+
+.boom {
+    background-image: url('../../assets/tiles/boom.png');
+    background-repeat: no-repeat;
+}
+
+.shelter {
+    background-image: url('../../assets/tiles/shelter.png');
+    background-repeat: no-repeat;
+}
+
+.water {
+    background-image: url('../../assets/tiles/water.png');
+    background-repeat: no-repeat;
+}
+
+.tree {
+    background-image: url('../../assets/tiles/tree.png');
+}
+
+//   .chest {
+//     background-image: url('../../assets/tiles/chest.png');
+//   }
+
+.star {
+    background-image: url('../../assets/tiles/star.png');
+    background-repeat: no-repeat;
+}
+
+.grass {
+}
+
+.crossable-grass {
+    background-image: url('../../assets/tiles/crossable-grass.png'); 
+}
+
+.rock-cube {
+    background-image: url('../../assets/tiles/rock-cube.png');
+    background-repeat: no-repeat;
+}
+
+.wall-cube {
+    background-image: url('../../assets/tiles/wall-cube.png');
+    background-repeat: no-repeat;
+}
+
+.shelter-cube {
+    background-image: url('../../assets/tiles/shelter-cube.png');
+    background-repeat: no-repeat;
+}
+
+.left-top {
+    background-position: 0px 0px;
+}
+
+.right-top {
+    background-position: 20px 0px;
+}
+
+.left-bottom {
+    background-position: 0px 20px;
+}
+
+.right-bottom {
+    background-position: 20px 20px;
+}

@@ -1,0 +1,1 @@
+export {setTiles, updateTiles} from './actions/mapAction';
