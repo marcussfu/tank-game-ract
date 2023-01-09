@@ -7,10 +7,6 @@ import {getCurrentPosition, getChangeDirection,
 
 import './tank.styles.scss';
 
-// const defaultTankState = {
-
-// };
-
 const Tank = ({tank}) => {
     // const {position, imageUrl, hidden=false, spriteLocation='center', rotate=0} = tank;
     const {updateTank} = useActions();
@@ -22,26 +18,14 @@ const Tank = ({tank}) => {
         hidden: false,
         spriteLocation: tank.spriteLocation? tank.spriteLocation: 'center'});
     const [fireTick, setFireTick] = useState(0);
-    const [newPos, setNewPos] = useState([]);
-
-    // let newPos = getCurrentPosition(tankStates.direction, tankStates.position);
 
     useEffect(() => {
         const interval = setInterval(() => tick(), 200);
-        return () => clearInterval(interval);
-    }, []);
-
-    // useEffect(() => {
-    //     updateTank({
-    //         key_index: tankStates.key_index,
-    //         position: tankStates.position,
-    //         direction: tankStates.direction
-    //     })
-
-    //     // newPos = getCurrentPosition(tankStates.direction, tankStates.position);
-    //     setNewPos(getCurrentPosition(tankStates.direction, tankStates.position));
-    //     console.log('after setting: ', tankStates.key_index, tankStates.position, tankStates.direction, newPos);
-    // }, [tankStates])
+        return () => {
+            // console.log("VVVVVVV");
+            clearInterval(interval)
+        };
+    }, [tankStates]);
 
     useEffect(() => {
         // console.log("TTTTTTT ", fireTick);
@@ -50,9 +34,10 @@ const Tank = ({tank}) => {
     const tick = () => {
         // console.log('XXXXX ', fireTick);
         // setFireTick(fireTick => fireTick+1);
-
+        // console.log("GGGGGGG   ", tankStates.key_index, tankStates.position, tankStates.direction);
+        const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
         const random = Math.random()
-        if (random >= 0.9) {
+        if (random >= 0.9 || !(obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles))) {
             const dir = getChangeDirection();
             setTankStates(tankStates => ({
                 ...tankStates,
@@ -60,25 +45,19 @@ const Tank = ({tank}) => {
                 rotate: directionToRotateDegree(dir)
             }))
         }
-        // const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
-        // setNewPos(newPos => getCurrentPosition(tankStates.direction, tankStates.position));
-        console.log("MMMMMMM   ", tankStates.key_index, tankStates.position, tankStates.direction, newPos);
-        if (obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles)) {
-            
+        else {
             setTankStates(tankStates => ({
                 ...tankStates,
                 position: newPos,
                 rotate: directionToRotateDegree(tankStates.direction)
             }))
         }
-        else {
-            const dir = getChangeDirection();
-            setTankStates(tankStates => ({
-                ...tankStates,
-                direction: dir,
-                rotate: directionToRotateDegree(dir)
-            }))
-        }
+
+        updateTank({
+            key_index: tankStates.key_index,
+            position: tankStates.position,
+            direction: tankStates.direction
+        })
 
         // const random = Math.random()
         // if (random >= 0.9) {
