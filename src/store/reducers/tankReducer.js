@@ -13,16 +13,12 @@ export const tankReducer = (state=intialState, action) => {
         case UPDATE_TANK:
             return Object.assign({}, state, {
                 tanks: 
-                    state.tanks.map((tank, index) => {
-                    if (index === action.index) {
-                        return Object.assign({}, tank, {
-                            ...tank.key_index,
-                            position: action.position, 
-                            direction: action.direction
-                        })
-                    }
-                    return tank
-                })
+                    state.tanks.map(tank => {
+                        if (tank.key_index === action.payload.key_index) {
+                            return Object.assign({}, tank, action.payload)
+                        }
+                        return tank
+                    })
             })
         case REMOVE_TANK:
             let tanks = state.tanks.filter( (tank, index) => index !== action.index)      
