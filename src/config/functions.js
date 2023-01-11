@@ -62,9 +62,3 @@ export const obeserveBoundaries = (pos) => {
   return (pos[0] >= 0 && pos[0] <= MAP_WIDTH - SPRITE_SIZE) &&
            (pos[1] >= 0 && pos[1] <= MAP_HEIGHT - SPRITE_SIZE);
 };
-
-export const obeserveImpassable = (pos, tiles) => {
-  const y = pos[1] / SPRITE_SIZE;
-  const x = pos[0] / SPRITE_SIZE;
-  return tiles[y][x] < 5;
-};

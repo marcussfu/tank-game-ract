@@ -21,16 +21,9 @@ export const tankReducer = (state=intialState, action) => {
                     })
             })
         case REMOVE_TANK:
-            let tanks = state.tanks.filter( (tank, index) => index !== action.index)      
             return Object.assign({}, state, {
-                tanks: 
-                tanks.map((tank, index) => {
-                    return {
-                    position: tank.position,
-                    direction: tank.direction,
-                    key_index: Date.now() + index
-                    }       
-                })
+                tanks:
+                    state.tanks.filter(tank => tank.key_index !== action.payload) 
             })
         // case ADD_MAP_BULLETS:
         //     return {

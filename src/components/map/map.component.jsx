@@ -1,6 +1,7 @@
 import {useSelector} from 'react-redux';
 
-import MapTile from '../../components/map-tile/map-tile.component';
+import MapTile from '../map-tile/map-tile.component';
+import Bullets from '../bullets/bullets.component';
 
 import {SPRITE_SIZE, getTileSprite} from '../../config/constants';
 
@@ -16,6 +17,7 @@ const Map = () => {
                     )}
                 </div>
             )}
+            <Bullets />
         </div>
     )
 }

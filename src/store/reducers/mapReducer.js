@@ -13,7 +13,7 @@ export const mapReducer = (state=intialState, action) => {
             }
         case UPDATE_TILES:
             return {
-                ...action.payload
+                tiles: action.payload
             }
         // case ADD_MAP_BULLETS:
         //     return {

@@ -3,14 +3,15 @@ import {useSelector} from 'react-redux';
 import {useActions} from '../../store/hooks/useActions';
 
 import {getCurrentPosition, getChangeDirection, 
-    directionToRotateDegree, obeserveBoundaries, obeserveImpassable} from '../../config/functions';
+    directionToRotateDegree, obeserveBoundaries} from '../../config/functions';
 
+import {SPRITE_SIZE} from '../../config/constants';
 import './tank.styles.scss';
 
 const Tank = ({tank}) => {
     // const {position, imageUrl, hidden=false, spriteLocation='center', rotate=0} = tank;
-    const {updateTank} = useActions();
     const tiles = useSelector((state) => state.mapReducer.tiles);
+    const {updateTank, setBullets} = useActions();
 
     const [tankStates, setTankStates] = useState({
         ...tank, 
@@ -22,18 +23,29 @@ const Tank = ({tank}) => {
     useEffect(() => {
         const interval = setInterval(() => tick(), 200);
         return () => {
-            // console.log("VVVVVVV");
             clearInterval(interval)
         };
     }, [tankStates]);
 
     useEffect(() => {
-        // console.log("TTTTTTT ", fireTick);
+        // console.log("GGGGGGGG", fireTick);
+        if (fireTick === 5) {
+            setFireTick(0);
+            // console.log("BBNNNNNNNNN  5 ", fireTick);
+            setBullets({
+                position: tankStates.position,
+                direction: tankStates.direction
+            })
+        }
     }, [fireTick]);
 
+    const obeserveImpassable = (newPos, tiles) => {
+        const y = newPos[1] / SPRITE_SIZE;
+        const x = newPos[0] / SPRITE_SIZE;
+        return tiles[y][x] < 5;
+    };
+
     const tick = () => {
-        // console.log('XXXXX ', fireTick);
-        // setFireTick(fireTick => fireTick+1);
         // console.log("GGGGGGG   ", tankStates.key_index, tankStates.position, tankStates.direction);
         const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
         const random = Math.random()
@@ -51,6 +63,7 @@ const Tank = ({tank}) => {
                 position: newPos,
                 rotate: directionToRotateDegree(tankStates.direction)
             }))
+            setFireTick(fireTick => fireTick+1);
         }
 
         updateTank({
@@ -58,53 +71,6 @@ const Tank = ({tank}) => {
             position: tankStates.position,
             direction: tankStates.direction
         })
-
-        // const random = Math.random()
-        // if (random >= 0.9) {
-        //     const dir = getChangeDirection();
-        //     setTankStates(tankStates => ({
-        //         ...tankStates,
-        //         direction: dir,
-        //         rotate: directionToRotateDegree(dir)
-        //     }))
-
-        //     // updateTank({
-        //     //     key_index: tankStates.key_index,
-        //     //     position: tankStates.position,
-        //     //     direction: dir
-        //     // })
-        // }
-        // // console.log('before setting', tankStates.position);
-        // // const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
-
-        // if (obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles)) {
-        //     setTankStates(tankStates => ({
-        //         ...tankStates,
-        //         position: newPos,
-        //         // rotate: directionToRotateDegree(tankStates.direction)
-        //     }))
-
-        //     // updateTank({
-        //     //     key_index: tankStates.key_index,
-        //     //     position: newPos,
-        //     //     direction: tankStates.direction
-        //     // })
-        // }
-        // else {
-        //     const dir = getChangeDirection();
-        //     setTankStates(tankStates => ({
-        //         ...tankStates,
-        //         direction: dir,
-        //         rotate: directionToRotateDegree(dir)
-        //     }))
-
-        //     // updateTank({
-        //     //     key_index: tankStates.key_index,
-        //     //     position: tankStates.position,
-        //     //     direction: dir
-        //     // })
-        // }
-        // console.log("BBBBBBB  ", newPos);
     };
     
     return (
