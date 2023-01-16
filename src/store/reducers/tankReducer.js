@@ -1,4 +1,4 @@
-import {ADD_TANK, UPDATE_TANK, REMOVE_TANK} from '../../config/types';
+import {ADD_TANK, UPDATE_TANK, REMOVE_TANK, REMOVE_TANKS} from '../../config/types';
 
 const intialState = {
     tanks: []
@@ -25,10 +25,10 @@ export const tankReducer = (state=intialState, action) => {
                 tanks:
                     state.tanks.filter(tank => tank.key_index !== action.payload) 
             })
-        // case ADD_MAP_BULLETS:
-        //     return {
-        //         ...action.payload
-        //     }
+        case REMOVE_TANKS:
+            return {
+                tanks: []
+            }
         default:
             return state
     }

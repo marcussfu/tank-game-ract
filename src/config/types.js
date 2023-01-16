@@ -10,14 +10,15 @@ export const REMOVE_TANK = 'REMOVE_TANK';
 export const REMOVE_TANKS = 'REMOVE_TANKS';
 
 // player action
+export const ADD_PLAYER = 'ADD_PLAYER';
 export const HIDE_PLAYER = 'HIDE_PLAYER';
 export const MOVE_PLAYER = 'MOVE_PLAYER';
 
 // bullet action
-export const ADD_BULLETS = 'ADD_BULLETS';
-export const REMOVE_BULLETS = 'REMOVE_BULLETS';
+export const ADD_BULLET = 'ADD_BULLET';
+export const REMOVE_BULLET = 'REMOVE_BULLET';
 export const ADD_LAST_BULLET_FRAME_ID = 'ADD_LAST_BULLET_FRAME_ID';
 
-// game action
+// world action
 export const GAME_OVER = 'GAME_OVER';
 export const GAME_WIN = 'GAME_WIN';

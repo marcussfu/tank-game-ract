@@ -1,13 +1,13 @@
-import {ADD_BULLETS, REMOVE_BULLETS, 
+import {ADD_BULLET, REMOVE_BULLET, 
     ADD_LAST_BULLET_FRAME_ID} from '../../config/types';
 
-export const setBullets = (bullets) => ({
-    type: ADD_BULLETS,
+export const setBullet = (bullets) => ({
+    type: ADD_BULLET,
     payload: bullets
 });
 
-export const removeBullets = (bullets)=> ({
-    type: REMOVE_BULLETS,
+export const removeBullet = (bullets)=> ({
+    type: REMOVE_BULLET,
     payload: bullets
 });
 

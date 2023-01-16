@@ -19,13 +19,13 @@ const getTreasureLocation = () => {
 export const getCurrentPosition = (direction, oldPos) => {
   switch(direction) {
     case 'SOUTH':
-      return [oldPos[0], oldPos[1] + 20]
+      return [oldPos[0], oldPos[1] + SPRITE_SIZE]
     case 'EAST':
-      return [oldPos[0] + 20, oldPos[1]]
+      return [oldPos[0] + SPRITE_SIZE, oldPos[1]]
     case 'WEST':
-      return [oldPos[0] - 20, oldPos[1]]
+      return [oldPos[0] - SPRITE_SIZE, oldPos[1]]
     case 'NORTH':
-      return [oldPos[0], oldPos[1] - 20]
+      return [oldPos[0], oldPos[1] - SPRITE_SIZE]
     default:
       return [0, 0]
   }

@@ -10,14 +10,16 @@ import './tank.styles.scss';
 
 const Tank = ({tank}) => {
     // const {position, imageUrl, hidden=false, spriteLocation='center', rotate=0} = tank;
-    const tiles = useSelector((state) => state.mapReducer.tiles);
-    const {updateTank, setBullets} = useActions();
+    const tiles = useSelector(state => state.mapReducer.tiles);
+    const {updateTank, setBullet} = useActions();
 
     const [tankStates, setTankStates] = useState({
         ...tank, 
         rotate: 0, 
         hidden: false,
-        spriteLocation: tank.spriteLocation? tank.spriteLocation: 'center'});
+        spriteLocation: tank.spriteLocation? tank.spriteLocation: 'center',
+        bulletShootedCount: 0
+    });
     const [fireTick, setFireTick] = useState(0);
 
     useEffect(() => {
@@ -32,9 +34,15 @@ const Tank = ({tank}) => {
         if (fireTick === 5) {
             setFireTick(0);
             // console.log("BBNNNNNNNNN  5 ", fireTick);
-            setBullets({
+            setTankStates(tankStates => ({
+                ...tankStates,
+                bulletShootedCount: tankStates.bulletShootedCount + 1
+            }))
+            // console.log("GGGGGG ", tankStates.key_index, tankStates.bulletShootedCount);
+            setBullet({
                 position: tankStates.position,
-                direction: tankStates.direction
+                direction: tankStates.direction,
+                key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount
             })
         }
     }, [fireTick]);
