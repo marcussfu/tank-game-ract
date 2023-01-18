@@ -31,11 +31,11 @@ const World = () => {
         }
         addPlayer(playerState);
 
-        setTank({
-            position: [0,0],
-            direction: 'SOUTH',
-            key_index: Date.now()
-        });
+        // setTank({
+        //     position: [0,0],
+        //     direction: 'SOUTH',
+        //     key_index: Date.now()
+        // });
 
         // setTank({
         //     position: [780,460],

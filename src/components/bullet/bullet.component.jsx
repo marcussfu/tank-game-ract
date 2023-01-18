@@ -9,18 +9,18 @@ import BulletPic from '../../assets/bullet/bullet.png';
 import {SPRITE_SIZE, FLAG_POSITION} from '../../config/constants';
 import './bullet.styles.scss';
 
+import store from '../../store/store';
+
+let interval = null;
+
 const Bullet = ({bullet}) => {
-    const tiles = useSelector(state => state.mapReducer.tiles);
+    // const tiles = useSelector(state => state.mapReducer.tiles);
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
 
-    const {setTiles, 
-        updateTiles, 
-        removeTank,
-        removeTanks,
-        gameOver,
-        gameWin,
-        hidePlayer,
+    const {setTiles, updateTiles, 
+        removeTank, removeTanks,
+        gameOver, gameWin, hidePlayer,
         // removeBullet,
     } = useActions();
 
@@ -29,23 +29,31 @@ const Bullet = ({bullet}) => {
         rotate: directionToRotateDegree(bullet.direction),
         is_player: bullet.is_player? true:false,
         display: true});
-
-    let interval = null;
-
+    
     useEffect(() => {
-        interval = setInterval(() => tick(), 50);
-        return () => {
-            clearInterval(interval)
-        };
+        interval = setInterval(() => tick(), 500);
+        return () => clearInterval(interval);
     }, [bulletStates]);
 
-    const obeserveImpassable = (newPos, tiles) => {
+    useEffect(() => {
+        console.log("VVVVV  ", bulletStates.display);
+        if (!bulletStates.display) clearInterval(interval);
+    }, [bulletStates.display]);
+
+    // useEffect(() => {
+    //     console.log('PPPPPPPP      ', tiles);
+    // }, [tiles]);
+
+    const obeserveImpassable = (newPos) => {
+        // const tiles = useSelector(state => state.mapReducer.tiles);
+        const tiles = store.getState().mapReducer.tiles;
         const y = newPos[1] / SPRITE_SIZE;
         const x = newPos[0] / SPRITE_SIZE;
+        const nextTile = tiles[y][x]
         // hitTank(tiles, newPos, x, y);
         // hitPlayer(tiles, newPos, x, y);
         changeTiles(tiles, newPos, x, y);
-        return tiles[y][x] < 5;
+        return nextTile < 5;
     };
 
     const hitTank = (tiles, newPos, x, y) => {
@@ -101,28 +109,28 @@ const Bullet = ({bullet}) => {
     const releaseBoom = (tiles, x, y) => {
         tiles[y][x] = 9;
         setTiles(tiles);
+        
         tiles[y][x] = 0;
         setTimeout(() => {
+            console.log("ZZZZZZ");
             updateTiles(tiles);
         }, 100)
     };
 
     const tick = () => {
-        // console.log("bullet tick");
         const newPos = getCurrentPosition(bulletStates.direction, bulletStates.position);
         setBulletStates(bulletStates => ({
             ...bulletStates,
             position: newPos
         }));
 
-        if (!(obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles))) {
+        if (!(obeserveBoundaries(newPos) && obeserveImpassable(newPos))) {
             setBulletStates(bulletStates => ({
                 ...bulletStates,
                 display: false
             }));
-            // removeBullet(bulletStates.key_index);
-            // console.log("KKKKKK   ", bulletStates.key_index);
-            clearInterval(interval);
+            console.log("KKKKKK   ", bulletStates.key_index, bulletStates.position, newPos);
+            // clearInterval(interval);
         }
     };
 

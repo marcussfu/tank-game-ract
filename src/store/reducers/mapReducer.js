@@ -9,7 +9,6 @@ export const mapReducer = (state=intialState, action) => {
         case ADD_TILES:
             return {
                 tiles: action.payload
-                // ...state, tiles: action.payload
             }
         case UPDATE_TILES:
             return {

@@ -9,7 +9,6 @@ import {SPRITE_SIZE} from '../../config/constants';
 import './tank.styles.scss';
 
 const Tank = ({tank}) => {
-    // const {position, imageUrl, hidden=false, spriteLocation='center', rotate=0} = tank;
     const tiles = useSelector(state => state.mapReducer.tiles);
     const {updateTank, setBullet} = useActions();
 
@@ -30,15 +29,12 @@ const Tank = ({tank}) => {
     }, [tankStates]);
 
     useEffect(() => {
-        // console.log("GGGGGGGG", fireTick);
         if (fireTick === 5) {
             setFireTick(0);
-            // console.log("BBNNNNNNNNN  5 ", fireTick);
             setTankStates(tankStates => ({
                 ...tankStates,
                 bulletShootedCount: tankStates.bulletShootedCount + 1
             }))
-            // console.log("GGGGGG ", tankStates.key_index, tankStates.bulletShootedCount);
             setBullet({
                 position: tankStates.position,
                 direction: tankStates.direction,
@@ -54,7 +50,6 @@ const Tank = ({tank}) => {
     };
 
     const tick = () => {
-        // console.log("GGGGGGG   ", tankStates.key_index, tankStates.position, tankStates.direction);
         const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
         const random = Math.random()
         if (random >= 0.9 || !(obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles))) {

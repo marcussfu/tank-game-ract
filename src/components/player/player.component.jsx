@@ -17,10 +17,8 @@ const Player = ({player}) => {
         ...player,
         hidden: false,
     });
-
     const [newDir, setNewDir] = useState('');
-
-    let bulletShootedCount = 0;
+    const [bulletShootedCount, setBulletShootedCount] = useState(0);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown)
@@ -40,6 +38,11 @@ const Player = ({player}) => {
     useEffect(() => {
         attemptMove(newDir);
     }, [newDir]);
+
+    useEffect(() => {
+        // console.log("HHHHHH   ", bulletShootedCount);
+        fireBullet(bulletShootedCount);
+    }, [bulletShootedCount])
 
     const getSpriteLocation = (direction, walkIndex) => {
         switch(direction) {
@@ -94,12 +97,12 @@ const Player = ({player}) => {
         setNewDir('');
     }
 
-    const fireBullet = () => {
-        bulletShootedCount++;
+    const fireBullet = (currBulletCount) => {
+        if (currBulletCount <= 0) return;
         setBullet({
             position: playerState.position,
             direction: playerState.direction,
-            key_index: 'tank_player_1' + '_Bullet_' + bulletShootedCount,
+            key_index: 'tank_player_Bullet_' + currBulletCount,
             is_player: true
         })   
     }
@@ -109,17 +112,17 @@ const Player = ({player}) => {
         if (!game_over && !game_win) {
             switch (e.keyCode) {
                 case 32:
-                    return fireBullet()
+                    return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 case 37:
-                    return setNewDir('WEST')
+                    return setNewDir('WEST');
                 case 38:
-                    return setNewDir('NORTH')
+                    return setNewDir('NORTH');
                 case 39:
-                    return setNewDir('EAST')
+                    return setNewDir('EAST');
                 case 40:
-                    return setNewDir('SOUTH')
+                    return setNewDir('SOUTH');
                 default:
-                    return console.log(e.keyCode)
+                    return console.log(e.keyCode);
             }
         }
     }
