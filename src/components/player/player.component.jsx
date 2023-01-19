@@ -9,20 +9,13 @@ import {SPRITE_SIZE} from '../../config/constants';
 import './player.styles.scss';
 
 const Player = ({player}) => {
+    const {position, direction, hidden=false, spriteLocation, walkIndex} = player;
     const tiles = useSelector(state => state.mapReducer.tiles);
     const {game_over, game_win} = useSelector(state => state.worldReducer);
     const {setTiles, setBullet, movePlayer, removeTanks, gameWin} = useActions();
 
-    const [playerState, setPlayerState] = useState({
-        ...player,
-        hidden: player.hidden? player.hidden: false,
-    });
     const [newDir, setNewDir] = useState('');
     const [bulletShootedCount, setBulletShootedCount] = useState(0);
-
-    useEffect(() => {
-        console.log("YYYYYY   ", player);
-    }, [player]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown)
@@ -30,21 +23,10 @@ const Player = ({player}) => {
     }, []);
 
     useEffect(() => {
-        movePlayer({
-            position: playerState.position,
-            direction: playerState.direciton,
-            spriteLocation: playerState.spriteLocation,
-            walkIndex: playerState.walkIndex,
-            // bullets: []
-        });
-    }, [playerState]);
-
-    useEffect(() => {
         attemptMove(newDir);
     }, [newDir]);
 
     useEffect(() => {
-        // console.log("HHHHHH   ", bulletShootedCount);
         fireBullet(bulletShootedCount);
     }, [bulletShootedCount])
 
@@ -74,38 +56,36 @@ const Player = ({player}) => {
             gameWin();
             removeTanks();
         }
-
         return nextTile < 5;
     };
 
     function dispatchMove(dir, pos) {
-        const newWalkIndex = playerState.walkIndex >= 1? 0: playerState.walkIndex+1;
+        const newWalkIndex = walkIndex >= 1? 0: walkIndex+1;
         const newSpriteLocation = getSpriteLocation(dir, newWalkIndex);
         
-        setPlayerState(playerState => ({
-            ...playerState,
-            direction: dir,
+        movePlayer({
             position: pos,
+            direction: dir,
             spriteLocation: newSpriteLocation,
-            walkIndex: newWalkIndex,
-        }));
-        // console.log("player moves to " + pos)
+            walkIndex: newWalkIndex
+        });
+        console.log("player moves to " + pos)
     }
 
     const attemptMove = (dir) => {
         if (dir === '') return;
-        const newPos = getCurrentPosition(dir, playerState.position);
+        const newPos = getCurrentPosition(dir, position);
         dispatchMove(dir, 
             (obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles)? 
-                newPos: playerState.position));
+                newPos: position));
         setNewDir('');
     }
 
     const fireBullet = (currBulletCount) => {
         if (currBulletCount <= 0) return;
         setBullet({
-            position: playerState.position,
-            direction: playerState.direction,
+            position: position,
+            direction: direction,
             key_index: 'tank_player_Bullet_' + currBulletCount,
             is_player: true
         })   
@@ -132,16 +112,13 @@ const Player = ({player}) => {
     }
     
     return (
-        <div>
-            <div className='player' style={{
-                top: playerState.position[1],
-                left: playerState.position[0],
-                display: playerState.hidden? 'none': 'block',
-                backgroundImage: `url(${playerTank})`,
-                backgroundPosition: playerState.spriteLocation
-            }}/>
-            <div>{playerState.position}</div>
-        </div>
+        <div className='player' style={{
+            top: position[1],
+            left: position[0],
+            display: hidden? 'none': 'block',
+            backgroundImage: `url(${playerTank})`,
+            backgroundPosition: spriteLocation
+        }}/>
     )
 }
 
