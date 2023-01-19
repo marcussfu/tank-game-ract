@@ -7,7 +7,7 @@ export const setupTiles = (tiles) => {
       treasure = getTreasureLocation()
     } 
     newTiles[treasure[0]][treasure[1]] = 12
-    // console.log("setup treasure at " + [treasure[1]*SPRITE_SIZE, treasure[0]*SPRITE_SIZE])
+    console.log("setup treasure at " + [treasure[1]*SPRITE_SIZE, treasure[0]*SPRITE_SIZE])
 
     return newTiles
 };

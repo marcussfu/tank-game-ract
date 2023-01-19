@@ -1,6 +1,6 @@
-import {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux';
-import {useActions} from '../../store/hooks/useActions';
+// import {useState, useEffect} from 'react';
+// import {useSelector} from 'react-redux';
+// import {useActions} from '../../store/hooks/useActions';
 
 import React from 'react'
 import {getCurrentPosition, directionToRotateDegree, 
@@ -110,64 +110,57 @@ class Bullet extends React.Component {
         }
     }  
    
-     updateTiles(tiles, newPos, x, y) {
-       const nextTile = tiles[y][x]
-       switch(Math.round(nextTile)) {      
-         case 5:
-           this.releaseBoom(tiles, x, y)
-           break  
+    updateTiles(tiles, newPos, x, y) {
+        const nextTile = tiles[y][x]
+        switch(Math.round(nextTile)) {      
+            case 5:
+                this.releaseBoom(tiles, x, y)
+                break
+            case 10:
+                FLAG_POSITION.map((row, index) => tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
+                store.dispatch({
+                    type: 'ADD_TILES',
+                    payload: tiles
+                }) 
+                store.dispatch({
+                    type: 'GAME_OVER'
+                })    
+                store.dispatch({
+                    type: 'REMOVE_TANKS'
+                })                               
+                break
+            case 12:
+                this.releaseBoom(tiles, x, y);
+                setTimeout(() => {
+                    tiles[y][x] = 4
+                    store.dispatch({
+                        type: 'ADD_TILES',
+                        payload: tiles
+                    })
+                }, 100);
+                console.log("find tresure at " + newPos)
+                break
+            default:
+                break
+        }
+    }
    
-         case 10:
-           FLAG_POSITION.map((row, index) => tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
-           store.dispatch({
-             type: 'ADD_TILES',
-             payload: tiles
-           }) 
-           store.dispatch({
-             type: 'GAME_OVER'
-           })    
-           store.dispatch({
-             type: 'REMOVE_TANKS'
-           })                               
-           break    
-   
-         case 12:
-           this.releaseBoom(tiles, x, y)
-           tiles[y][x] = 4
-           store.dispatch({
-             type: 'ADD_TILES',
-             payload: tiles,
-            //  payload: {
-            //    tiles: tiles,
-            //    bullets: []
-            //  }
-           }) 
-           console.log("find tresure at " + newPos)
-           break        
-   
-         default:
-           break
-       }
-     }
-   
-     render() {
-       return(
-         <div 
-           style={{
-             top: this.state.position[1],
-             left: this.state.position[0],
-             backgroundImage: `url(${BulletPic})`,
-             width: '20px',
-             height: '20px',
-             position: 'absolute',
-             backgroundPosition: "0px 0px",
-             display: this.state.display === false ? "none" : "block",
-             transform: `rotate(${this.state.rotate}deg)`
-           }}
-         />
-      )  
-     }
-   }
+    render() {
+        return(
+            <div style={{
+                top: this.state.position[1],
+                left: this.state.position[0],
+                backgroundImage: `url(${BulletPic})`,
+                width: '20px',
+                height: '20px',
+                position: 'absolute',
+                backgroundPosition: "0px 0px",
+                display: this.state.display === false ? "none" : "block",
+                transform: `rotate(${this.state.rotate}deg)`
+            }}/>
+        )
+    }
+}
 
 // let interval = null;
 
