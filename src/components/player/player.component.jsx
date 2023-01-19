@@ -15,10 +15,14 @@ const Player = ({player}) => {
 
     const [playerState, setPlayerState] = useState({
         ...player,
-        hidden: false,
+        hidden: player.hidden? player.hidden: false,
     });
     const [newDir, setNewDir] = useState('');
     const [bulletShootedCount, setBulletShootedCount] = useState(0);
+
+    useEffect(() => {
+        console.log("YYYYYY   ", player);
+    }, [player]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown)
@@ -85,7 +89,7 @@ const Player = ({player}) => {
             spriteLocation: newSpriteLocation,
             walkIndex: newWalkIndex,
         }));
-        console.log("player moves to " + pos)
+        // console.log("player moves to " + pos)
     }
 
     const attemptMove = (dir) => {

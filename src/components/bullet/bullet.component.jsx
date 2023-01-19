@@ -2,17 +2,14 @@ import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {useActions} from '../../store/hooks/useActions';
 
-
+import React from 'react'
 import {getCurrentPosition, directionToRotateDegree, 
     obeserveBoundaries} from '../../config/functions';
+    import store from '../../store/store';
 
+import {SPRITE_SIZE, FLAG_POSITION} from '../../config/constants';
 import BulletPic from '../../assets/bullet/bullet.png';
-import {SPRITE_SIZE, FLAG_POSITION, MAP_WIDTH, MAP_HEIGHT} from '../../config/constants';
 import './bullet.styles.scss';
-
-import store from '../../store/store';
-
-import React from 'react'
 
 class Bullet extends React.Component {
     constructor(props) {
@@ -20,124 +17,98 @@ class Bullet extends React.Component {
        this.state = {
          direction: props.bullet.direction,
          position: props.bullet.position,
-         rotate: this.directionToRotateDegree(props.bullet.direction),
+         rotate: directionToRotateDegree(props.bullet.direction),
          display: true,
          is_player: props.bullet.is_player
        }
      }
    
-     componentDidMount() {
+    componentDidMount() {
        this.timerID = setInterval(() => this.tick(), 50)
-     }
+    }
    
-     componentWillUnmount() {
+    componentWillUnmount() {
        clearInterval(this.timerID)
-     }  
+    }  
    
-     tick() {
-       let newPos = this.getBulletPosition(this.state.direction, this.state.position, 5)
+    tick() {
+       let newPos = getCurrentPosition(this.state.direction, this.state.position, 5)
        this.setState({
          position: newPos
        })
    
-       if (!(this.obeserveBoundaries(newPos) && this.obeserveImpassable(newPos))) {
+       if (!(obeserveBoundaries(newPos) && this.obeserveImpassable(newPos))) {
             this.setState({
                 display: false
             })      
             clearInterval(this.timerID)      
        }
-     }
+    }
    
-     obeserveBoundaries(newPos) {
-       return (newPos[0] >= 0 && newPos[0] <= MAP_WIDTH - SPRITE_SIZE) &&
-              (newPos[1] >= 0 && newPos[1] <= MAP_HEIGHT - SPRITE_SIZE) 
-     }
-   
-     obeserveImpassable(newPos) {
+    obeserveImpassable(newPos) {
        const tiles = store.getState().mapReducer.tiles
        const y = newPos[1] / SPRITE_SIZE
        const x = newPos[0] / SPRITE_SIZE
        const nextTile = tiles[y][x]
-    //    this.hitTank(tiles, newPos, x, y)    
-    //    this.hitPlayer(tiles, newPos, x, y)
+       this.hitTank(tiles, newPos, x, y)    
+       this.hitPlayer(tiles, newPos, x, y)
        this.updateTiles(tiles, newPos, x, y)
        return nextTile < 5
-     }
+    }
    
-     releaseBoom(tiles, x, y) {
+    releaseBoom(tiles, x, y) {
        tiles[y][x] = 9
        store.dispatch({
-         type: 'ADD_TILES',
-         payload: tiles,
-        //  payload: {
-        //    tiles: tiles,
-        //    bullets: []
-        //  }
+            type: 'ADD_TILES',
+            payload: tiles
        })
        setTimeout(() => {
-        tiles[y][x] = 0
-             store.dispatch({
-             type: 'UPDATE_TILES',
-             payload: tiles,
-        //      payload: {
-        //      tiles: tiles,
-        //      bullets: []
-           })
+            tiles[y][x] = 0
+            store.dispatch({
+                type: 'UPDATE_TILES',
+                payload: tiles
+            })
        }, 100)
-
-
-    //    tiles[y][x] = 0
-    //    setTimeout(() => {
-    //      store.dispatch({
-    //          type: 'UPDATE_TILES',
-    //          payload: tiles,
-    //     //      payload: {
-    //     //      tiles: tiles,
-    //     //      bullets: []
-    //     //    }
-    //      })
-    //    }, 100)
-     }
+    }
    
-     hitTank(tiles, newPos, x, y) {
-       const tanks = store.getState().tankReducer.tanks
-       tanks.map((tank, index) => {
-         if(tank.position[0] === newPos[0] && tank.position[1] === newPos[1]){
-           console.log("hint tank " + index)
-           this.releaseBoom(tiles, x, y)
-           store.dispatch({
-             type: 'REMOVE_TANK',
-             index: index
-           })
+    hitTank(tiles, newPos, x, y) {
+        const tanks = store.getState().tankReducer.tanks;
+        if (!tanks) return;
+        tanks.forEach(tank => {
+            if (JSON.stringify(tank.position) === JSON.stringify(newPos)) {
+                console.log("hint tank " + tank.key_index)
+                this.releaseBoom(tiles, x, y);
+                store.dispatch({
+                    type: 'REMOVE_TANK',
+                    payload: tank.key_index
+                })
+                // get current tanks state
+                if (store.getState().tankReducer.tanks.length === 0) {
+                    store.dispatch({
+                        type: 'GAME_WIN'
+                    })
+                }
+            }
+        })
+    }
    
-           if (store.getState().tankReducer.tanks && store.getState().tankReducer.tanks.length === 0) {
-             store.dispatch({
-               type: 'GAME_WIN'
-             })
-           }
-         }
-         return null
-       })
-     }
-   
-     hitPlayer(tiles, newPos, x, y) {
-       if (this.state.is_player !== true){  
-         const player = store.getState().playerReducer
-         if(player.position[0] === newPos[0] && player.position[1] === newPos[1]){
-           console.log("hint player at " + newPos)
-           this.releaseBoom(tiles, x, y)
-           store.dispatch({
-             type: 'HIDE_PLAYER'
-           })
-           store.dispatch({
-             type: 'GAMEOVER'
-           })  
-           store.dispatch({
-             type: 'REMOVE_TANKS'
-           })               
-         }
-       }
-     }  
+    hitPlayer(tiles, newPos, x, y) {
+        if (this.state.is_player) return;
+        const player = store.getState().playerReducer;
+        if (JSON.stringify(player.position) === JSON.stringify(newPos)) {
+            console.log("hint player at " + newPos)
+            this.releaseBoom(tiles, x, y)
+            store.dispatch({
+                type: 'HIDE_PLAYER'
+            })
+            store.dispatch({
+                type: 'GAME_OVER'
+            })  
+            store.dispatch({
+                type: 'REMOVE_TANKS'
+            })               
+        }
+    }  
    
      updateTiles(tiles, newPos, x, y) {
        const nextTile = tiles[y][x]
@@ -150,14 +121,10 @@ class Bullet extends React.Component {
            FLAG_POSITION.map((row, index) => tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
            store.dispatch({
              type: 'ADD_TILES',
-             payload: tiles,
-            //  payload: {
-            //    tiles: tiles,
-            //    bullets: []
-            //  }
+             payload: tiles
            }) 
            store.dispatch({
-             type: 'GAMEOVER'
+             type: 'GAME_OVER'
            })    
            store.dispatch({
              type: 'REMOVE_TANKS'
@@ -180,36 +147,6 @@ class Bullet extends React.Component {
    
          default:
            break
-       }
-     }
-   
-     getBulletPosition(direction, oldPos) {
-       switch(direction) {
-         case 'SOUTH':
-           return [oldPos[0], oldPos[1] + 20]
-         case 'EAST':
-           return [oldPos[0] + 20, oldPos[1]]
-         case 'WEST':
-           return [oldPos[0] - 20, oldPos[1]]
-         case 'NORTH':
-           return [oldPos[0], oldPos[1] - 20]
-         default:
-           return [0, 0]
-       }
-     }  
-   
-     directionToRotateDegree(direction) {
-       switch(direction) {
-         case 'SOUTH':
-           return 180
-         case 'EAST':
-           return 90
-         case 'WEST':
-           return 270
-         case 'NORTH':
-           return 0
-         default:
-           return 0
        }
      }
    

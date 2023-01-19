@@ -22,14 +22,14 @@ const World = () => {
     useEffect(() => {
         setTiles(setupTiles(tiles));
 
-        const playerState = {
-            position: [280, 460],
-            spriteLocation: '0px 60px',
-            direction: 'NORTH',
-            walkIndex: 0,
-            bullets: []
-        }
-        addPlayer(playerState);
+        // const playerState = {
+        //     position: [280, 460],
+        //     spriteLocation: '0px 60px',
+        //     direction: 'NORTH',
+        //     walkIndex: 0,
+        //     bullets: []
+        // }
+        // addPlayer(playerState);
 
         setTank({
             position: [0,0],

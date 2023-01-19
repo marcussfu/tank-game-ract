@@ -5,7 +5,7 @@ const initState = {
     // direction: '',
     // spriteLocation: '',
     // walkIndex: 0,
-    // // bullets: []
+    // bullets: []
 
     position: [280, 460],
     spriteLocation: '0px 60px',
@@ -17,11 +17,14 @@ const initState = {
 export const playerReducer = (state=initState, action) => {
     switch(action.type) {
         case ADD_PLAYER:
-            return action.payload;
+            return {...action.payload};
         case MOVE_PLAYER:
-            return action.payload;
+            return {...action.payload};
         case HIDE_PLAYER:
-            return action.payload;
+            return {
+                ...state,
+                hidden: true
+            }
         default:
             return state;
     }
