@@ -20,6 +20,7 @@ const Tank = ({tank}) => {
         bulletShootedCount: 0
     });
     const [fireTick, setFireTick] = useState(0);
+    // const [isRunningInterval, setIsRunningInterval] = useState(true);
 
     useEffect(() => {
         const interval = setInterval(() => tick(), 200);

@@ -3,6 +3,7 @@ import {useActions} from '../../store/hooks/useActions';
 import { useState, useEffect } from 'react';
 
 import {getCurrentPosition, obeserveBoundaries} from '../../config/functions';
+import store from '../../store/store';
 import playerTank from '../../assets/tank/playerTank.png';
 
 import {SPRITE_SIZE} from '../../config/constants';
@@ -11,7 +12,6 @@ import './player.styles.scss';
 const Player = ({player}) => {
     const {position, direction, hidden=false, spriteLocation, walkIndex} = player;
     const tiles = useSelector(state => state.mapReducer.tiles);
-    const {game_over, game_win} = useSelector(state => state.worldReducer);
     const {setTiles, setBullet, movePlayer, removeTanks, gameWin} = useActions();
 
     const [newDir, setNewDir] = useState('');
@@ -92,8 +92,10 @@ const Player = ({player}) => {
     }
     
     const handleKeyDown = (e) => {
-        e.preventDefault()
-        if (!game_over && !game_win) {
+        e.preventDefault();
+        // get current state
+        if (!store.getState().worldReducer.game_over && 
+            !store.getState().worldReducer.game_win) {
             switch (e.keyCode) {
                 case 32:
                     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);

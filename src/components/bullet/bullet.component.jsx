@@ -5,7 +5,7 @@ import {useActions} from '../../store/hooks/useActions';
 // import React from 'react'
 import {getCurrentPosition, directionToRotateDegree, 
     obeserveBoundaries} from '../../config/functions';
-    import store from '../../store/store';
+import store from '../../store/store';
 
 import {SPRITE_SIZE, FLAG_POSITION} from '../../config/constants';
 import BulletPic from '../../assets/bullet/bullet.png';
