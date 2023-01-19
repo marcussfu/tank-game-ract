@@ -5,10 +5,10 @@ import {useSelector} from 'react-redux';
 import Map from '../../components/map/map.component';
 import Tank from "../../components/tank/tank.component";
 import Player from '../../components/player/player.component';
+import GameResult from '../../components/game-result/game-result.component';
 
 import {setupTiles} from '../../config/functions';
 import {tiles} from '../../config/maps/map_1';
-
 
 import enamyTank from '../../assets/tank/enamyTank.png';
 
@@ -18,6 +18,8 @@ const World = () => {
     const {setTiles, setTank, addPlayer} = useActions();
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
+    const game_over = useSelector(state => state.worldReducer.game_over);
+    const game_win = useSelector(state => state.worldReducer.game_win);
 
     useEffect(() => {
         setTiles(setupTiles(tiles));
@@ -50,12 +52,20 @@ const World = () => {
         });
     }, []);
 
+    const getGameResultData = () => {
+        return {
+            resultText: game_over? 'Gameover':'You Win',
+            game_over: game_over
+        }
+    };
+
     return (
         <div className='world-container'>
             <Map />
             {player && <Player player={player}/>}
             {tanks.map(tank =>
                 <Tank key={tank.key_index} tank={{...tank, imageUrl: enamyTank}} />)}
+            {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
             {/* <GameIntro /> */}
         </div>
     )
