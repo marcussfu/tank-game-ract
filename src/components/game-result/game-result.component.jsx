@@ -9,25 +9,46 @@ const initState = {
     position: [280, 230]
 }
 
-let interval = null;
-
 const GameResult = ({gameResultData}) => {
     const {resultText, game_over} = gameResultData;
     const [gameResultState, setGameResultState] = useState(initState);
+    const [isRunningInterval, setIsRunningInterval] = useState(true);
+    const [isRunningInterval_1, setIsRunningInterval_1] = useState(false);
+
+    let interval = null, interval_1 = null;
 
     useEffect(() => {
-        interval = setInterval(() => {
-            if (gameResultState.height >= MAP_HEIGHT) {
+        if (gameResultState.height >= MAP_HEIGHT) {
+            setIsRunningInterval(false);
+        }
+    }, [gameResultState]);
+
+    useEffect(() => {
+        if (isRunningInterval) {
+            interval = setInterval(() => {
                 setGameResultState(gameResultState => ({
                     ...gameResultState,
-                    height: MAP_HEIGHT
-                }))
-                clearInterval(interval);
-                setInterval(() => moveHeader(), 500);
-            }
-        }, 50);
+                    height: gameResultState.height + 50
+                }));
+            }, 50);
+        }
+        else {
+            setGameResultState(gameResultState => ({
+                ...gameResultState,
+                height: MAP_HEIGHT
+            }))
+            clearInterval(interval);
+            setIsRunningInterval_1(true);
+        }
+        
         return () => clearInterval(interval);
-    }, []);
+    }, [isRunningInterval]);
+
+    useEffect(() => {
+        if (isRunningInterval_1)
+            interval_1 = setInterval(() => moveHeader(), 500);
+        return () => clearInterval(interval_1);
+    }, [isRunningInterval_1]);
 
     const moveHeader = () => {
         const random1 = Math.random();

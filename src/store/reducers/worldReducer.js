@@ -8,12 +8,10 @@ const intialState = {
 export const worldReducer = (state=intialState, action) => {
     switch(action.type) {
         case GAME_OVER:
-            console.log("OOOVVVVEEERRR");
             return {
                 game_over: true
             };
         case GAME_WIN:
-            console.log("WWWWWWIIINNNN");
             return {
                 game_win: true
             };
