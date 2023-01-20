@@ -120,11 +120,13 @@ const Bullet = ({bullet}) => {
     };
 
     const releaseBoom = (tiles, x, y) => {
+        const forest = tiles[y][x] === 1? true: false;
+
         tiles[y][x] = 9;
         setTiles(tiles);
 
         setTimeout(() => {
-            tiles[y][x] = 0;
+            tiles[y][x] = forest? 1:0;
             updateTiles(tiles);
         }, 100)
     };
