@@ -12,14 +12,20 @@ import './player.styles.scss';
 const Player = ({player}) => {
     const {position, direction, hidden=false, spriteLocation, walkIndex} = player;
     const tiles = useSelector(state => state.mapReducer.tiles);
-    const {setTiles, setBullet, movePlayer, removeTanks, gameWin} = useActions();
+
+    const {setTiles, setBullet, movePlayer,
+        removeTanks, gameWin} = useActions();
 
     const [newDir, setNewDir] = useState('');
     const [bulletShootedCount, setBulletShootedCount] = useState(0);
 
     useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        }
     }, []);
 
     useEffect(() => {
@@ -28,7 +34,7 @@ const Player = ({player}) => {
 
     useEffect(() => {
         fireBullet(bulletShootedCount);
-    }, [bulletShootedCount])
+    }, [bulletShootedCount]);
 
     const getSpriteLocation = (direction, walkIndex) => {
         switch(direction) {
@@ -97,8 +103,8 @@ const Player = ({player}) => {
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
             switch (e.keyCode) {
-                case 32:
-                    return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
+                // case 32:
+                //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 case 37:
                     return setNewDir('WEST');
                 case 38:
@@ -107,6 +113,20 @@ const Player = ({player}) => {
                     return setNewDir('EAST');
                 case 40:
                     return setNewDir('SOUTH');
+                default:
+                    return console.log(e.keyCode);
+            }
+        }
+    }
+
+    const handleKeyUp = (e) => {
+        e.preventDefault();
+        // get current state
+        if (!store.getState().worldReducer.game_over && 
+            !store.getState().worldReducer.game_win) {
+            switch (e.keyCode) {
+                case 32:
+                    return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 default:
                     return console.log(e.keyCode);
             }
