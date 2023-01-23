@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useActions } from '../../store/hooks/useActions';
 
 import {MAP_HEIGHT, MAP_WIDTH} from '../../config/constants'
 import './game-result.styles.scss';
@@ -14,6 +15,8 @@ const GameResult = ({gameResultData}) => {
     const [gameResultState, setGameResultState] = useState(initState);
     const [isRunningInterval, setIsRunningInterval] = useState(true);
     const [isRunningInterval_1, setIsRunningInterval_1] = useState(false);
+
+    const {gameInit} = useActions();
 
     let interval = null, interval_1 = null;
 
@@ -61,6 +64,10 @@ const GameResult = ({gameResultData}) => {
         }))
     };
 
+    const gameRestart = () => {
+        gameInit();
+    };
+
     return (
         <div className='game-result-container' style={{
             height: gameResultState.height,
@@ -72,6 +79,7 @@ const GameResult = ({gameResultData}) => {
                 top: gameResultState.position[1],
                 left: gameResultState.position[0],
             }}>{resultText}</h1>
+            <button onClick={() => gameRestart()}>RESTART</button>
         </div>
     )
 };

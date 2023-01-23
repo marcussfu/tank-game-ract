@@ -7,6 +7,7 @@ import Tank from "../../components/tank/tank.component";
 import Player from '../../components/player/player.component';
 import GameResult from '../../components/game-result/game-result.component';
 import GameIntro from '../../components/game-intro/game-intro.component';
+import GameStart from '../../components/game-start/game-start.component';
 import MoveButtons from '../../components/move-buttons/move-buttons.component';
 
 import {setupTiles} from '../../config/functions';
@@ -20,20 +21,20 @@ const World = () => {
     const {setTiles, setTank, addPlayer} = useActions();
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
-    const game_over = useSelector(state => state.worldReducer.game_over);
-    const game_win = useSelector(state => state.worldReducer.game_win);
+    const {game_over, game_win, game_start} = useSelector(state => state.worldReducer);
 
     useEffect(() => {
+        if (!game_start) return;
         setTiles(setupTiles(tiles));
 
-        // const playerState = {
-        //     position: [280, 460],
-        //     spriteLocation: '0px 60px',
-        //     direction: 'NORTH',
-        //     walkIndex: 0,
-        //     bullets: []
-        // }
-        // addPlayer(playerState);
+        const playerState = {
+            position: [280, 460],
+            spriteLocation: '0px 60px',
+            direction: 'NORTH',
+            walkIndex: 0,
+            bullets: []
+        }
+        addPlayer(playerState);
 
         setTank({
             position: [0,0],
@@ -52,7 +53,7 @@ const World = () => {
             direction: 'WEST',
             key_index: Date.now()+2
         });
-    }, []);
+    }, [game_start]);
 
     const getGameResultData = () => {
         return {
@@ -63,13 +64,21 @@ const World = () => {
 
     return (
         <div className='world-container'>
-            <MoveButtons />
-            <Map />
-            {player && <Player player={player}/>}
-            {tanks.map(tank =>
-                <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
-            {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
-            <GameIntro />
+            {game_start? 
+                <>
+                    <MoveButtons />
+                    <Map />
+                    {player && <Player player={player}/>}
+                    {tanks.map(tank =>
+                        <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
+                    {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
+                    {/* <GameIntro /> */}
+                </>
+                :
+                <>
+                    <GameStart />
+                </>
+            }
         </div>
     )
 }

@@ -19,7 +19,7 @@ const Bullet = ({bullet}) => {
     const {setTiles, updateTiles, 
         removeTank, removeTanks,
         gameOver, gameWin, hidePlayer,
-        // removeBullet,
+        removeBullet,
     } = useActions();
 
     const [bulletStates, setBulletStates] = useState({
@@ -76,8 +76,10 @@ const Bullet = ({bullet}) => {
 
                 removeTank(tank.key_index);
                 // get current tanks state
-                if (store.getState().tankReducer.tanks.length <= 0)
+                if (store.getState().tankReducer.tanks.length <= 0) {
                     gameWin();
+                    removeBullet();
+                }
             }
         })
     };
@@ -90,6 +92,7 @@ const Bullet = ({bullet}) => {
             hidePlayer();
             gameOver();
             removeTanks();
+            removeBullet();
         }
     };
 
@@ -105,6 +108,7 @@ const Bullet = ({bullet}) => {
                 setTiles(tiles);
                 gameOver();
                 removeTanks();
+                removeBullet();
                 break;
             case 12:
                 releaseBoom(tiles, x, y);

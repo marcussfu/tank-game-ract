@@ -1,7 +1,7 @@
 import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from './constants'
 
 export const setupTiles = (tiles) => {
-    let newTiles = [...tiles]
+    let newTiles = tiles.map(item => item.slice());
     let treasure = getTreasureLocation()
     while(newTiles[treasure[0]][treasure[1]] !== 5) {
       treasure = getTreasureLocation()

@@ -22,3 +22,5 @@ export const ADD_LAST_BULLET_FRAME_ID = 'ADD_LAST_BULLET_FRAME_ID';
 // world action
 export const GAME_OVER = 'GAME_OVER';
 export const GAME_WIN = 'GAME_WIN';
+export const GAME_START = 'GAME_START';
+export const GAME_INIT = 'GAME_INIT';
