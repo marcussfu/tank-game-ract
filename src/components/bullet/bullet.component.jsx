@@ -57,6 +57,12 @@ const Bullet = ({bullet}) => {
         }));
     };
 
+    const gameOverTotal = () => {
+        gameOver();
+        removeTanks();
+        removeBullet();
+    };
+
     const obeserveImpassable = (newPos) => {
         const y = newPos[1] / SPRITE_SIZE;
         const x = newPos[0] / SPRITE_SIZE;
@@ -90,9 +96,7 @@ const Bullet = ({bullet}) => {
             console.log('hit player at', newPos);
             releaseBoom(tiles, x, y);
             hidePlayer();
-            gameOver();
-            removeTanks();
-            removeBullet();
+            gameOverTotal();
         }
     };
 
@@ -106,9 +110,7 @@ const Bullet = ({bullet}) => {
                 FLAG_POSITION.map((row, index) => 
                     tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
                 setTiles(tiles);
-                gameOver();
-                removeTanks();
-                removeBullet();
+                gameOverTotal();
                 break;
             case 12:
                 releaseBoom(tiles, x, y);

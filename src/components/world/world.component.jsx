@@ -9,6 +9,7 @@ import GameResult from '../../components/game-result/game-result.component';
 import GameIntro from '../../components/game-intro/game-intro.component';
 import GameStart from '../../components/game-start/game-start.component';
 import MoveButtons from '../../components/move-buttons/move-buttons.component';
+import Timing from '../../components/timing/timing.component';
 
 import {setupTiles} from '../../config/functions';
 import {tiles} from '../../config/maps/map_1';
@@ -72,6 +73,7 @@ const World = () => {
                     {tanks.map(tank =>
                         <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                     {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
+                    <Timing />
                     {/* <GameIntro /> */}
                 </>
                 :
