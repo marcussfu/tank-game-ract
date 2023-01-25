@@ -3,12 +3,16 @@ import { useState, useEffect } from 'react';
 import { useActions } from '../../store/hooks/useActions';
 
 import {MAP_HEIGHT, MAP_WIDTH} from '../../config/constants'
+
+import click from '../../assets/sounds/click.mp3';
 import './game-result.styles.scss';
 
 const initState = {
     height: 0,
     position: [280, 230]
 }
+
+const clickAudio = new Audio(click);
 
 const GameResult = ({gameResultData}) => {
     const {resultText, game_over} = gameResultData;
@@ -65,6 +69,7 @@ const GameResult = ({gameResultData}) => {
     };
 
     const gameRestart = () => {
+        clickAudio.play();
         gameInit();
     };
 

@@ -9,6 +9,9 @@ import store from '../../store/store';
 
 import {SPRITE_SIZE, FLAG_POSITION} from '../../config/constants';
 import BulletPic from '../../assets/bullet/bullet.png';
+
+// import find_star from '../../assets/sounds/find_star.mp3';
+import crash from '../../assets/sounds/crash.mp3';
 import './bullet.styles.scss';
 
 const Bullet = ({bullet}) => {
@@ -114,6 +117,9 @@ const Bullet = ({bullet}) => {
                 break;
             case 12:
                 releaseBoom(tiles, x, y);
+                // const findStarAudio = new Audio(find_star);
+                // findStarAudio.play();
+
                 setTimeout(() => {
                     tiles[y][x] = 4;
                     setTiles(tiles);
@@ -126,8 +132,10 @@ const Bullet = ({bullet}) => {
     };
 
     const releaseBoom = (tiles, x, y) => {
-        const forest = tiles[y][x] === 1? true: false;
+        const crashAudio = new Audio(crash);
+        crashAudio.play();
 
+        const forest = tiles[y][x] === 1? true: false;
         tiles[y][x] = 9;
         setTiles(tiles);
 

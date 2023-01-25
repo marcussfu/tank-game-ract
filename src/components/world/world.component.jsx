@@ -14,47 +14,93 @@ import Timing from '../../components/timing/timing.component';
 import {setupTiles} from '../../config/functions';
 import {tiles} from '../../config/maps/map_1';
 
+import bgm from '../../assets/sounds/bgm.mp3';
+import short_of_time_bgm from '../../assets/sounds/short_of_time_bgm.mp3';
+import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
+import game_win_bgm from '../../assets/sounds/game_win_bgm.mp3';
+
 import enemyTank from '../../assets/tank/enemyTank.png';
 
 import './world.styles.scss';
+
+const bgmAudio = new Audio(bgm);
+const gameOverAudio = new Audio(game_over_bgm);
+const gameWinAudio = new Audio(game_win_bgm);
 
 const World = () => {
     const {setTiles, setTank, addPlayer} = useActions();
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
-    const {game_over, game_win, game_start} = useSelector(state => state.worldReducer);
+    const {game_over, game_win, game_start, short_of_time} = useSelector(state => state.worldReducer);
 
     useEffect(() => {
-        if (!game_start) return;
-        setTiles(setupTiles(tiles));
-
-        const playerState = {
-            position: [280, 460],
-            spriteLocation: '0px 60px',
-            direction: 'NORTH',
-            walkIndex: 0,
-            bullets: []
+        if (short_of_time) {
+            bgmAudio.src = short_of_time_bgm;
+            bgmAudio.load();
+            bgmAudio.play();
         }
-        addPlayer(playerState);
+    }, [short_of_time]);
 
-        setTank({
-            position: [0,0],
-            direction: 'SOUTH',
-            key_index: Date.now()
-        });
+    useEffect(() => {
+        if (!game_start)
+            bgmAudioInit();
+        else {
+            bgmAudio.src = bgm;
+            bgmAudio.load();
+            bgmAudio.play();
+            bgmAudio.loop = true;
 
-        setTank({
-            position: [780,460],
-            direction: 'NORTH',
-            key_index: Date.now()+1
-        });
+            setTiles(setupTiles(tiles));
 
-        setTank({
-            position: [740,0],
-            direction: 'WEST',
-            key_index: Date.now()+2
-        });
+            const playerState = {
+                position: [280, 460],
+                spriteLocation: '0px 60px',
+                direction: 'NORTH',
+                walkIndex: 0,
+                bullets: []
+            }
+            addPlayer(playerState);
+
+            setTank({
+                position: [0,0],
+                direction: 'SOUTH',
+                key_index: Date.now()
+            });
+
+            setTank({
+                position: [780,460],
+                direction: 'NORTH',
+                key_index: Date.now()+1
+            });
+
+            setTank({
+                position: [740,0],
+                direction: 'WEST',
+                key_index: Date.now()+2
+            });
+        }
     }, [game_start]);
+
+    useEffect(() => {
+        if (game_over || game_win) {
+            bgmAudioInit();
+            game_over && gameOverAudio.play();
+            game_win && gameWinAudio.play();
+        }
+        else {
+            gameWinAudio.pause();
+            gameWinAudio.currentTime = 0;
+
+            gameOverAudio.pause();
+            gameOverAudio.currentTime = 0;
+        }
+            
+    }, [game_over, game_win]);
+
+    const bgmAudioInit = () => {
+        bgmAudio.pause();
+        bgmAudio.currentTime = 0;
+    };
 
     const getGameResultData = () => {
         return {

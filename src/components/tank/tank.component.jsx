@@ -5,6 +5,7 @@ import {useActions} from '../../store/hooks/useActions';
 import {getCurrentPosition, getChangeDirection, 
     directionToRotateDegree, obeserveBoundaries} from '../../config/functions';
 
+import shoot_by_tank from '../../assets/sounds/shoot_by_tank.mp3';
 import {SPRITE_SIZE} from '../../config/constants';
 import './tank.styles.scss';
 
@@ -40,7 +41,9 @@ const Tank = ({tank}) => {
                 position: tankStates.position,
                 direction: tankStates.direction,
                 key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount
-            })
+            });
+            const shootByTankAudio = new Audio(shoot_by_tank);
+            shootByTankAudio.play();
         }
     }, [fireTick]);
 

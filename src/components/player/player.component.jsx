@@ -6,8 +6,11 @@ import {getCurrentPosition, obeserveBoundaries} from '../../config/functions';
 import store from '../../store/store';
 import playerTank from '../../assets/tank/playerTank.png';
 
+import shoot_by_player from '../../assets/sounds/shoot_by_player.mp3';
 import {SPRITE_SIZE} from '../../config/constants';
 import './player.styles.scss';
+
+// const shootByPlayerAudio = new Audio(shoot_by_player);
 
 const Player = ({player}) => {
     const {position, direction, hidden=false, spriteLocation, walkIndex} = player;
@@ -94,7 +97,9 @@ const Player = ({player}) => {
             direction: direction,
             key_index: 'tank_player_Bullet_' + currBulletCount,
             is_player: true
-        })   
+        });
+        const shootByPlayerAudio = new Audio(shoot_by_player);
+        shootByPlayerAudio.play();
     }
     
     const handleKeyDown = (e) => {

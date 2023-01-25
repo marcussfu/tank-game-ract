@@ -24,3 +24,4 @@ export const GAME_OVER = 'GAME_OVER';
 export const GAME_WIN = 'GAME_WIN';
 export const GAME_START = 'GAME_START';
 export const GAME_INIT = 'GAME_INIT';
+export const SHORT_OF_TIME = 'SHORT_OF_TIME';

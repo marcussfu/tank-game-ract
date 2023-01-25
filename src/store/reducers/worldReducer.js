@@ -1,9 +1,10 @@
-import {GAME_OVER, GAME_WIN, GAME_START, GAME_INIT} from '../../config/types';
+import {GAME_OVER, GAME_WIN, GAME_START, GAME_INIT, SHORT_OF_TIME} from '../../config/types';
 
 const intialState = {
     game_over: false,
     game_win: false,
     game_start: false,
+    shot_of_time: false,
 }
 
 export const worldReducer = (state=intialState, action) => {
@@ -23,8 +24,14 @@ export const worldReducer = (state=intialState, action) => {
                 ...state,
                 game_start: true
             };
+        case SHORT_OF_TIME:
+            return {
+                ...state,
+                short_of_time: true
+            };
         case GAME_INIT:
             return {
+                shot_of_time: false,
                 game_start: false,
                 game_over: false,
                 game_win: false
