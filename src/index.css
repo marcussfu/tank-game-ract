@@ -1,6 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: Pixeloid;
   background-color: #0e4603bd;
+}
+/* sans-serif; */
+
+/* @font-face {
+  font-family: 'Pixeloid';
+  src: local('Pixeloid'), url(./assets/fonts/Pixeloid/PixeloidMono-VGj6x.ttf) format('truetype');
+} */
+
+/* @font-face {
+  font-family: 'Pixeloid';
+  font-weight: 900;
+  src: local('Pixeloid'), url(./assets/fonts/Pixeloid/PixeloidSans-JR6qo.ttf) format('truetype');
+} */
+
+@font-face {
+  font-family: 'Pixeloid';
+  font-weight: bold;
+  src: local('Pixeloid'), url(./assets/fonts/Pixeloid/PixeloidSansBold-GOjpP.ttf) format('truetype');
 }

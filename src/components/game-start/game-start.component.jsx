@@ -22,6 +22,8 @@ const GameStart = () => {
 
     useEffect(() => {
         document.getElementById('gameStartBtn').disabled = !isShowStartBtn;
+        if (!isShowStartBtn)
+            document.getElementById('gameStartBtn').style = 'color:darkcyan';
     }, [isShowStartBtn]);
 
     const gameStartAction = () => {
@@ -44,9 +46,9 @@ const GameStart = () => {
     };
 
     return (
-        <div>
-            <h1>TANK WAR</h1>
-            <button id='gameStartBtn' onClick={() => gameStartAction()}>START</button>
+        <div className='game-start-container'>
+            <h1 className='title'>TANK WAR</h1>
+            <div id='gameStartBtn' onClick={() => gameStartAction()}>START</div>
         </div>
     )
 };
