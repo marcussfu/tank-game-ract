@@ -14,17 +14,6 @@
         color: brown;
     }
 
-    #gameStartBtn {
-        cursor: pointer;
-        font-size: 30px;
-        color: darkturquoise;
-        padding: 30px 0;
-
-        &:hover {
-            color: darkcyan;
-        }
-    }
-
     .tank-animation{
         position: absolute;
         width: 20px;
@@ -32,8 +21,7 @@
         top: 250px;
         left: 800px;
         background-position: 20px 40px;
-        animation-name: cross;
-        animation-duration: 5s;
+        animation: cross 5s;
     }
 }
 

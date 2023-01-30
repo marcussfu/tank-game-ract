@@ -43,11 +43,18 @@ const Timing = () => {
         }
     }, [timeValue]);
 
+    const getTimingText = (timeValue) => {
+        const min = Math.floor(timeValue/60);
+        const sec = timeValue % 60;
+        return  min + ' : ' + (sec < 10? '0' + sec: sec);
+    };
+
     return (
         <div className='timing-container'>
-            <h1 style={{
-                color: timeValue < 10? 'red': 'black'
-            }}>{Math.floor(timeValue/60) + ' : ' + timeValue % 60}</h1>
+            <div className="timing-text" style={{
+                color: timeValue < 10? 'red': 'orange',
+                display: game_over || game_win? 'none': 'block'
+            }}>{getTimingText(timeValue)}</div>
         </div>
     )
 };

@@ -3,6 +3,8 @@ import { useActions } from '../../store/hooks/useActions';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
+import Button from '../../components/button/button.component';
+
 import playerTank from '../../assets/tank/playerTank.png';
 
 import game_start_bgm from '../../assets/sounds/game_start_bgm.mp3';
@@ -24,8 +26,8 @@ const GameStart = () => {
 
     useEffect(() => {
         if (!isShowStartBtn) {
-            document.getElementById('title').style.cssText += 'animation-name: disappear;animation-duration: 8s';
-            document.getElementById('gameStartBtn').style.cssText += 'animation-name: disappear;animation-duration: 8s';
+            document.getElementById('title').style.cssText += 'animation: disappear 8s;';
+            document.getElementById('gameStartBtn').style.cssText += 'animation: disappear 8s;';
         }
     }, [isShowStartBtn]);
 
@@ -52,7 +54,7 @@ const GameStart = () => {
     return (
         <div className='game-start-container'>
             <h1 id='title'>TANK WAR</h1>
-            <div id='gameStartBtn' onClick={() => gameStartAction()}>START</div>
+            <Button id='gameStartBtn' onClick={() => gameStartAction()}>START</Button>
             {!isShowStartBtn && <div className='tank-animation' style={{
                 backgroundImage: `url(${playerTank})`
             }}/>}

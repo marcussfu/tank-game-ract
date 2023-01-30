@@ -1,0 +1,10 @@
+.button-container {
+    cursor: pointer;
+    font-size: 30px;
+    color: darkturquoise;
+    padding: 30px 0;
+
+    &:hover {
+        color: darkcyan;
+    }
+}

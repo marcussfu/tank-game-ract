@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useActions } from '../../store/hooks/useActions';
 
+import Button from '../../components/button/button.component';
+
 import {MAP_HEIGHT, MAP_WIDTH} from '../../config/constants'
 
 import click from '../../assets/sounds/click.mp3';
@@ -84,7 +86,7 @@ const GameResult = ({gameResultData}) => {
                 top: gameResultState.position[1],
                 left: gameResultState.position[0],
             }}>{resultText}</h1>
-            <button onClick={() => gameRestart()}>RESTART</button>
+            <Button onClick={() => gameRestart()}>RESTART</Button>
         </div>
     )
 };
