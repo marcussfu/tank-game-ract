@@ -8,16 +8,16 @@ const MoveButtons = () => {
         document.dispatchEvent(event);
     };
 
+    const handleUpClick = (keyCode) => {
+        let event = document.createEvent('Events');
+        event.initEvent('keyup', true, true);
+        event.keyCode = keyCode;
+        document.dispatchEvent(event);
+    };
+
     return (
         <div className='move-buttons'>
-            <div style={{
-                position: 'absolute',
-                marginTop: '50%',
-                textAlign: 'center',
-                left: 0,
-                paddingLeft: '5%',
-                zIndex: 1000,
-                }}>
+            <div className='control direction'>
                 <button onClick={(e) => handleClick(38)}>&uarr;</button>       
                 <br/> 
                 <button onClick={(e) => handleClick(37)}>&larr;</button>   
@@ -26,16 +26,9 @@ const MoveButtons = () => {
                 <br/>
                 <button onClick={(e) => handleClick(40)}>&darr;</button>
             </div>
-            <div style={{
-                position: 'absolute',
-                marginTop: '50%',
-                textAlign: 'center',
-                right: 0,
-                paddingRight: '5%',
-                zIndex: 1000,
-                }}>
+            <div className='control fire'>
                 <br/>
-                <button onClick={(e) => handleClick(32)}>Fire</button>       
+                <button onClick={(e) => handleUpClick(32)}>Fire</button>       
             </div>   
         </div>
     )

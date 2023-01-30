@@ -1,6 +1,34 @@
-.move-buttons button {
-    color: black;
-    background-color: white;
-    opacity: 0.6;
-    font-weight: bold;
+.move-buttons {
+    display: none;
+
+    .control {
+        position: absolute;
+        margin-top: 50%;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .direction {
+        padding-left: 5%;
+        left: 0px;
+    }
+
+    .fire {
+        padding-right: 5%;
+        right: 0px;
+    }
+
+    button {
+        color: black;
+        background-color: white;
+        opacity: 0.6;
+        font-weight: bold;
+        font-family: Pixeloid;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    .move-buttons {
+        display: block;
+    }
 }
