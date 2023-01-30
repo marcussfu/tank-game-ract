@@ -14,7 +14,7 @@ const Timing = () => {
     const {game_over, game_win} = useSelector(state => state.worldReducer);
     const [timeValue, settimeValue] = useState(TIME_LIMIT);
 
-    const {gameOver, removeTanks, removeBullet, shortOfTime} = useActions();
+    const {gameOver, removeTanks, removeBullet, shortOfTime, setTank} = useActions();
 
     let interval = null;
 
@@ -41,7 +41,30 @@ const Timing = () => {
             removeTanks();
             removeBullet();
         }
+
+        if (timeValue < 180 && timeValue > 0 && timeValue % 60 === 0)
+            createEnemyTank();
     }, [timeValue]);
+
+    const createEnemyTank = () => {
+        setTank({
+            position: [0,0],
+            direction: 'SOUTH',
+            key_index: Date.now()
+        });
+
+        setTank({
+            position: [780,460],
+            direction: 'NORTH',
+            key_index: Date.now()+1
+        });
+
+        setTank({
+            position: [740,0],
+            direction: 'WEST',
+            key_index: Date.now()+2
+        });
+    };
 
     const getTimingText = (timeValue) => {
         const min = Math.floor(timeValue/60);
@@ -52,7 +75,7 @@ const Timing = () => {
     return (
         <div className='timing-container'>
             <div className="timing-text" style={{
-                color: timeValue < 10? 'red': 'orange',
+                color: timeValue < 20? 'red': 'orange',
                 display: game_over || game_win? 'none': 'block'
             }}>{getTimingText(timeValue)}</div>
         </div>
