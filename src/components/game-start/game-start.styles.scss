@@ -5,8 +5,10 @@
     align-items: center;
     background-color: black;
     height: 100%;
+    overflow: hidden;
+    position: relative;
     
-    .title {
+    #title {
         font-family: Pixeloid;
         font-size: 60px;
         color: brown;
@@ -22,5 +24,26 @@
             color: darkcyan;
         }
     }
+
+    .tank-animation{
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 250px;
+        left: 800px;
+        background-position: 20px 40px;
+        animation-name: cross;
+        animation-duration: 5s;
+    }
+}
+
+@keyframes cross {
+    from {left: 800px;}
+    to {left: 0px;}
+}
+
+@keyframes disappear {
+    from {opacity: 1;}
+    to {opacity: 0;}
 }
 

@@ -3,6 +3,8 @@ import { useActions } from '../../store/hooks/useActions';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
+import playerTank from '../../assets/tank/playerTank.png';
+
 import game_start_bgm from '../../assets/sounds/game_start_bgm.mp3';
 import click from '../../assets/sounds/click.mp3';
 
@@ -21,12 +23,14 @@ const GameStart = () => {
     }, [game_start]);
 
     useEffect(() => {
-        document.getElementById('gameStartBtn').disabled = !isShowStartBtn;
-        if (!isShowStartBtn)
-            document.getElementById('gameStartBtn').style = 'color:darkcyan';
+        if (!isShowStartBtn) {
+            document.getElementById('title').style.cssText += 'animation-name: disappear;animation-duration: 8s';
+            document.getElementById('gameStartBtn').style.cssText += 'animation-name: disappear;animation-duration: 8s';
+        }
     }, [isShowStartBtn]);
 
     const gameStartAction = () => {
+        if (!isShowStartBtn) return;
         setIsShowStartBtn(false);
         clickAudio.play();
         gameStartActionSetTimeOut();
@@ -47,8 +51,11 @@ const GameStart = () => {
 
     return (
         <div className='game-start-container'>
-            <h1 className='title'>TANK WAR</h1>
+            <h1 id='title'>TANK WAR</h1>
             <div id='gameStartBtn' onClick={() => gameStartAction()}>START</div>
+            {!isShowStartBtn && <div className='tank-animation' style={{
+                backgroundImage: `url(${playerTank})`
+            }}/>}
         </div>
     )
 };
