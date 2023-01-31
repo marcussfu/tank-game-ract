@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useActions} from '../../store/hooks/useActions';
 import {useSelector} from 'react-redux';
 
@@ -23,9 +23,7 @@ import enemyTank from '../../assets/tank/enemyTank.png';
 
 import './world.styles.scss';
 
-const bgmAudio = new Audio(bgm);
-const gameOverAudio = new Audio(game_over_bgm);
-const gameWinAudio = new Audio(game_win_bgm);
+
 
 const World = () => {
     const {setTiles, setTank, addPlayer} = useActions();
@@ -34,8 +32,15 @@ const World = () => {
     const {game_over, game_win, game_start, short_of_time} = useSelector(state => state.worldReducer);
     const bgVolume = useSelector(state => state.settingReducer.bgVolume);
 
+    // const bgmAudio = new Audio(bgm);
+    const gameOverAudio = new Audio(game_over_bgm);
+    const gameWinAudio = new Audio(game_win_bgm);
+
+    const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
+
     useEffect(() => {
         bgmAudio.volume = bgVolume;
+        // setBgmAudio(bgmAudio => bgmAudio.volume = bgVolume);
     }, [bgVolume]);
 
     useEffect(() => {
@@ -43,6 +48,11 @@ const World = () => {
             bgmAudio.src = short_of_time_bgm;
             bgmAudio.load();
             bgmAudio.play();
+            // setBgmAudio(bgmAudio => {
+            //     bgmAudio.src = short_of_time_bgm;
+            //     bgmAudio.load();
+            //     bgmAudio.play();
+            // });
         }
     }, [short_of_time]);
 
@@ -54,6 +64,12 @@ const World = () => {
             bgmAudio.load();
             bgmAudio.play();
             bgmAudio.loop = true;
+            // setBgmAudio(bgmAudio => {
+            //     bgmAudio.src = bgm;
+            //     bgmAudio.load();
+            //     bgmAudio.play();
+            //     bgmAudio.loop = true;
+            // });
 
             setTiles(setupTiles(tiles));
 
