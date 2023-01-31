@@ -11,6 +11,7 @@ import './tank.styles.scss';
 
 const Tank = ({tank}) => {
     const tiles = useSelector(state => state.mapReducer.tiles);
+    const shootVolume = useSelector(state => state.settingReducer.shootVolume);
     const {updateTank, setBullet} = useActions();
 
     const [tankStates, setTankStates] = useState({
@@ -43,6 +44,7 @@ const Tank = ({tank}) => {
                 key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount
             });
             const shootByTankAudio = new Audio(shoot_by_tank);
+            shootByTankAudio.volume = shootVolume;
             shootByTankAudio.play();
         }
     }, [fireTick]);

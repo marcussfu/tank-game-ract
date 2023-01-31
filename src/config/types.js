@@ -26,3 +26,7 @@ export const GAME_START = 'GAME_START';
 export const GAME_INIT = 'GAME_INIT';
 export const GAME_PAUSE = 'GAME_PAUSE';
 export const SHORT_OF_TIME = 'SHORT_OF_TIME';
+
+// setting action
+export const SET_BG_VOLUME = 'SET_BG_VOLUME';
+export const SET_SHOOT_VOLUME = 'SET_SHOOT_VOLUME';

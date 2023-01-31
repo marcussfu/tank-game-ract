@@ -73,12 +73,9 @@ const Timing = () => {
     };
 
     return (
-        <div className='timing-container'>
-            <div className="timing-text" style={{
-                color: timeValue < 20? 'red': 'orange',
-                display: game_over || game_win? 'none': 'block'
-            }}>{getTimingText(timeValue)}</div>
-        </div>
+        <div className="timing-text" style={{
+            color: timeValue < 20? 'red': 'orange'
+        }}>{getTimingText(timeValue)}</div>
     )
 };
 

@@ -15,7 +15,7 @@ import './player.styles.scss';
 const Player = ({player}) => {
     const {position, direction, hidden=false, spriteLocation, walkIndex} = player;
     const tiles = useSelector(state => state.mapReducer.tiles);
-
+    const shootVolume = useSelector(state => state.settingReducer.shootVolume);
     const {setTiles, setBullet, movePlayer,
         removeTanks, gameWin} = useActions();
 
@@ -99,6 +99,7 @@ const Player = ({player}) => {
             is_player: true
         });
         const shootByPlayerAudio = new Audio(shoot_by_player);
+        shootByPlayerAudio.volume = shootVolume;
         shootByPlayerAudio.play();
     }
     
