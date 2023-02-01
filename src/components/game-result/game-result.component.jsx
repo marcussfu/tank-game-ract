@@ -77,8 +77,8 @@ const GameResult = ({gameResultData}) => {
 
     return (
         <div className='game-result-container' style={{
-            height: gameResultState.height,
-            width: MAP_WIDTH,
+            // height: gameResultState.height,
+            // width: MAP_WIDTH,
             color: game_over? 'red':'green'
         }}>
             <h1 style={{

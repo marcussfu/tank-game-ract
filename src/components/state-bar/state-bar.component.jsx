@@ -12,7 +12,7 @@ const StateBar = () => {
         <div className='state-bar-container' style={{
             visibility: game_over || game_win? 'hidden': 'visible'
         }}>
-            <Timing />
+            {/* <Timing /> */}
             <SettingDialog />
         </div>
     )

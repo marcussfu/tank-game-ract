@@ -1,7 +1,7 @@
 import {SET_BG_VOLUME, SET_SHOOT_VOLUME} from '../../config/types';
 
 const intialState = {
-    bgVolume: 1,
+    bgVolume: 0,
     shootVolume: 1,
 }
 

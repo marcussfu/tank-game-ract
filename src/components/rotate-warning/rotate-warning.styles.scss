@@ -1,13 +1,16 @@
 .rotate-warning {
     position: absolute;
     top: 0;
-    width: 810px;
-    height: 1200px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    // width: 100%;
+    // height: 100%;
+    // min-height: 400px;
     font-size: 30px;
     color: red;
     z-index: 1000;
     opacity: 0.7;
-    padding-top: 400px;
     text-align: center;
     background-color: white;
 }

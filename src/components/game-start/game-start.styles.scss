@@ -18,16 +18,16 @@
         position: absolute;
         width: 20px;
         height: 20px;
-        top: 250px;
-        left: 800px;
+        top: 50%;
+        right: 0;
         background-position: 20px 40px;
-        animation: cross 5s;
+        animation: cross 7s;
     }
 }
 
 @keyframes cross {
-    from {left: 800px;}
-    to {left: 0px;}
+    from {right: 0;}
+    to {right: 100%;}
 }
 
 @keyframes disappear {

@@ -1,24 +1,25 @@
 import {useSelector} from 'react-redux';
-
+import { Fragment } from 'react';
 import MapTile from '../map-tile/map-tile.component';
 import Bullets from '../bullets/bullets.component';
 
-import {SPRITE_SIZE, getTileSprite} from '../../config/constants';
+import {getTileSprite} from '../../config/constants';
 
+import './map.styles.scss';
 
 const Map = () => {
     const tiles = useSelector((state) => state.mapReducer.tiles);
     return (
-        <div>
+        <Fragment>
             {tiles.map((row,index) => 
-                 <div key={index} style={{height: SPRITE_SIZE}}>
+                 <div key={index} className='map-row-container'>
                     {row.map((tile,index) => 
                         <MapTile key={index} tile={getTileSprite(tile)} />
                     )}
                 </div> 
             )}
             <Bullets />
-        </div>
+        </Fragment>
     )
 }
 

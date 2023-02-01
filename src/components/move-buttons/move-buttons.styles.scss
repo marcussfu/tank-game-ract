@@ -3,19 +3,17 @@
 
     .control {
         position: absolute;
-        margin-top: 50%;
+        bottom: 5%;
         text-align: center;
         z-index: 1000;
     }
 
     .direction {
-        padding-left: 5%;
-        left: 0px;
+        left: 5%;
     }
 
     .fire {
-        padding-right: 5%;
-        right: 0px;
+        right: 5%;
     }
 
     button {
