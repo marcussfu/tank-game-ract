@@ -6,9 +6,9 @@ import Map from '../../components/map/map.component';
 import Tank from "../../components/tank/tank.component";
 import Player from '../../components/player/player.component';
 import GameResult from '../../components/game-result/game-result.component';
-import GameIntro from '../../components/game-intro/game-intro.component';
+// import GameIntro from '../../components/game-intro/game-intro.component';
 import GameStart from '../../components/game-start/game-start.component';
-import MoveButtons from '../../components/move-buttons/move-buttons.component';
+// import MoveButtons from '../../components/move-buttons/move-buttons.component';
 import StateBar from '../../components/state-bar/state-bar.component';
 
 import {setupTiles} from '../../config/functions';
@@ -155,7 +155,7 @@ const World = () => {
         <div className='world-container'>
             {game_start? 
                 <>
-                    <MoveButtons />
+                    {/* <MoveButtons /> */}
                     <Map />
                     {(!game_pause && player.position.length > 0) && <Player player={player}/>}
                     {!game_pause && tanks.map(tank =>

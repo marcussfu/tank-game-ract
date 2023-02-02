@@ -3,17 +3,29 @@
 
     .control {
         position: absolute;
-        bottom: 5%;
+        bottom: 30%;
         text-align: center;
         z-index: 1000;
     }
 
     .direction {
-        left: 5%;
+        left: 3%;
     }
 
     .fire {
-        right: 5%;
+        right: 3%;
+        background-color: darkturquoise;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            color: darkcyan;
+        }
     }
 
     button {
