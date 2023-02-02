@@ -36,12 +36,13 @@ const World = () => {
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
 
-    const [orientationType, setOrientationType] = useState(window.screen.orientation.type);
+    const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
 
     useEffect(() => {
-        // window.screen.orientation.addEventListener('change', orientationChange);
+        setOrientationType(window.screen.orientation.type);
+        window.screen.orientation.addEventListener('change', orientationChange);
         // window.screen.orientation.onchange = orientationChange;
-        window.addEventListener('resize', orientationChange);
+        // window.addEventListener('resize', orientationChange);
     }, []);
 
     useEffect(() => {
@@ -129,8 +130,8 @@ const World = () => {
     }, [game_over, game_win]);
 
     const orientationChange = (e) => {
-        // setOrientationType(e.currentTarget.type);
-        setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
+        setOrientationType(e.currentTarget.type);
+        // setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
     }
 
     const bgmAudioInit = () => {
