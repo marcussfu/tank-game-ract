@@ -40,7 +40,8 @@ const World = () => {
 
     useEffect(() => {
         // window.screen.orientation.addEventListener('change', orientationChange);
-        window.screen.orientation.onchange = orientationChange;
+        // window.screen.orientation.onchange = orientationChange;
+        window.addEventListener('resize', orientationChange);
     }, []);
 
     useEffect(() => {
@@ -128,7 +129,8 @@ const World = () => {
     }, [game_over, game_win]);
 
     const orientationChange = (e) => {
-        setOrientationType(e.currentTarget.type);
+        // setOrientationType(e.currentTarget.type);
+        setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
     }
 
     const bgmAudioInit = () => {
