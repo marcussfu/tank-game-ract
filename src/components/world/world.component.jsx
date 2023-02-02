@@ -39,6 +39,9 @@ const World = () => {
     const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
 
     useEffect(() => {
+        let portrait = window.matchMedia("(orientation: portrait)");
+        portrait.addEventListener("change", orientationChange);
+        
         // setOrientationType(window.screen.orientation.type);
         // window.screen.orientation.addEventListener('change', orientationChange);
         // window.screen.orientation.onchange = orientationChange;
@@ -130,8 +133,9 @@ const World = () => {
     }, [game_over, game_win]);
 
     const orientationChange = (e) => {
-        setOrientationType(e.currentTarget.type);
+        // setOrientationType(e.currentTarget.type);
         // setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
+        setOrientationType(e.matches? 'portrait':'landscape');
     }
 
     const bgmAudioInit = () => {
