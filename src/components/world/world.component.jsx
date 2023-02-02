@@ -23,13 +23,11 @@ import enemyTank from '../../assets/tank/enemyTank.png';
 
 import './world.styles.scss';
 
-
-
 const World = () => {
-    const {setTiles, setTank, addPlayer} = useActions();
+    const {setTiles, setTank, addPlayer, gamePause} = useActions();
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
-    const {game_over, game_win, game_start, short_of_time} = useSelector(state => state.worldReducer);
+    const {game_over, game_win, game_start, short_of_time, game_pause} = useSelector(state => state.worldReducer);
     const bgVolume = useSelector(state => state.settingReducer.bgVolume);
 
     // const bgmAudio = new Audio(bgm);
@@ -37,6 +35,19 @@ const World = () => {
     const gameWinAudio = new Audio(game_win_bgm);
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
+
+    const [orientationType, setOrientationType] = useState(window.screen.orientation.type);
+
+    useEffect(() => {
+        window.screen.orientation.addEventListener('change', orientationChange);
+        // window.screen.orientation.onchange = (e) => {
+        //     console.log("onchange   ", e);
+        // };
+    }, []);
+
+    useEffect(() => {
+        gamePause(orientationType.startsWith('portrait'));
+    }, [orientationType]);
 
     useEffect(() => {
         bgmAudio.volume = bgVolume;
@@ -118,6 +129,10 @@ const World = () => {
             
     }, [game_over, game_win]);
 
+    const orientationChange = (e) => {
+        setOrientationType(e.currentTarget.type);
+    }
+
     const bgmAudioInit = () => {
         bgmAudio.pause();
         bgmAudio.currentTime = 0;
@@ -136,8 +151,8 @@ const World = () => {
                 <>
                     <MoveButtons />
                     <Map />
-                    {player.position.length > 0 && <Player player={player}/>}
-                    {tanks.map(tank =>
+                    {(!game_pause && player.position.length > 0) && <Player player={player}/>}
+                    {!game_pause && tanks.map(tank =>
                         <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                     {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
                     <StateBar />

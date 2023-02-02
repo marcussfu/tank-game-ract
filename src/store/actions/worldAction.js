@@ -16,8 +16,9 @@ export const gameInit = () => ({
     type: GAME_INIT
 });
 
-export const gamePause = () => ({
-    type: GAME_PAUSE
+export const gamePause = (state) => ({
+    type: GAME_PAUSE,
+    payload: state
 });
 
 export const shortOfTime = () => ({
