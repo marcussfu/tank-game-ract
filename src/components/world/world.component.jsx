@@ -36,11 +36,12 @@ const World = () => {
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
 
-    const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
+    // const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
 
     useEffect(() => {
-        let portrait = window.matchMedia("(orientation: portrait)");
-        portrait.addEventListener("change", orientationChange);
+        console.log("HHHHHHH    ", window.screen.orientation.type);
+        // let portrait = window.matchMedia("(orientation: portrait)");
+        // portrait.addEventListener("change", orientationChange);
         
         // setOrientationType(window.screen.orientation.type);
         // window.screen.orientation.addEventListener('change', orientationChange);
@@ -48,9 +49,9 @@ const World = () => {
         // window.addEventListener('resize', orientationChange);
     }, []);
 
-    useEffect(() => {
-        gamePause(orientationType.startsWith('portrait'));
-    }, [orientationType]);
+    // useEffect(() => {
+    //     gamePause(orientationType.startsWith('portrait'));
+    // }, [orientationType]);
 
     useEffect(() => {
         bgmAudio.volume = bgVolume;
@@ -132,11 +133,11 @@ const World = () => {
             
     }, [game_over, game_win]);
 
-    const orientationChange = (e) => {
-        // setOrientationType(e.currentTarget.type);
-        // setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
-        setOrientationType(e.matches? 'portrait':'landscape');
-    }
+    // const orientationChange = (e) => {
+    //     // setOrientationType(e.currentTarget.type);
+    //     // setOrientationType(Math.abs(window.orientation) == 0? 'portrait':'landscape')
+    //     setOrientationType(e.matches? 'portrait':'landscape');
+    // }
 
     const bgmAudioInit = () => {
         bgmAudio.pause();
