@@ -39,8 +39,8 @@ const World = () => {
     const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
 
     useEffect(() => {
-        setOrientationType(window.screen.orientation.type);
-        window.screen.orientation.addEventListener('change', orientationChange);
+        // setOrientationType(window.screen.orientation.type);
+        // window.screen.orientation.addEventListener('change', orientationChange);
         // window.screen.orientation.onchange = orientationChange;
         // window.addEventListener('resize', orientationChange);
     }, []);
