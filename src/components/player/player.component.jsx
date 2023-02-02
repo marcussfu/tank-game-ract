@@ -2,12 +2,12 @@ import {useSelector} from 'react-redux';
 import {useActions} from '../../store/hooks/useActions';
 import { useState, useEffect } from 'react';
 
-import {getCurrentPosition, obeserveBoundaries} from '../../config/functions';
+import {getCurrentPosition, obeserveBoundaries, directionToRotateDegree} from '../../config/functions';
 import store from '../../store/store';
 import playerTank from '../../assets/tank/playerTank.png';
 
 import shoot_by_player from '../../assets/sounds/shoot_by_player.mp3';
-import {SPRITE_SIZE} from '../../config/constants';
+import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import './player.styles.scss';
 
 // const shootByPlayerAudio = new Audio(shoot_by_player);
@@ -21,6 +21,8 @@ const Player = ({player}) => {
 
     const [newDir, setNewDir] = useState('');
     const [bulletShootedCount, setBulletShootedCount] = useState(0);
+    const [rotate, setRotate] = useState(0);
+    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -32,6 +34,11 @@ const Player = ({player}) => {
     }, []);
 
     useEffect(() => {
+        setPosRatio({
+            widthRatio: document.getElementsByClassName('bullets-container')[0].offsetWidth/MAP_WIDTH,
+            heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
+        });
+
         attemptMove(newDir);
     }, [newDir]);
 
@@ -83,6 +90,7 @@ const Player = ({player}) => {
 
     const attemptMove = (dir) => {
         if (dir === '') return;
+        setRotate(directionToRotateDegree(dir));
         const newPos = getCurrentPosition(dir, position);
         dispatchMove(dir, 
             (obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles)? 
@@ -141,11 +149,11 @@ const Player = ({player}) => {
     
     return (
         <div className='player' style={{
-            top: position[1],
-            left: position[0],
+            top: position[1]*posRatio.heightRatio,
+            left: position[0]*posRatio.widthRatio,
             display: hidden? 'none': 'block',
             backgroundImage: `url(${playerTank})`,
-            backgroundPosition: spriteLocation
+            transform: `rotate(${rotate}deg)`
         }}/>
     )
 }

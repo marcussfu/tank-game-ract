@@ -6,7 +6,7 @@ import {getCurrentPosition, getChangeDirection,
     directionToRotateDegree, obeserveBoundaries} from '../../config/functions';
 
 import shoot_by_tank from '../../assets/sounds/shoot_by_tank.mp3';
-import {SPRITE_SIZE} from '../../config/constants';
+import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import './tank.styles.scss';
 
 const Tank = ({tank}) => {
@@ -23,8 +23,14 @@ const Tank = ({tank}) => {
     });
     const [fireTick, setFireTick] = useState(0);
     // const [isRunningInterval, setIsRunningInterval] = useState(true);
+    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
     useEffect(() => {
+        setPosRatio({
+            widthRatio: document.getElementsByClassName('bullets-container')[0].offsetWidth/MAP_WIDTH,
+            heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
+        });
+
         const interval = setInterval(() => tick(), 200);
         return () => {
             clearInterval(interval)
@@ -84,8 +90,8 @@ const Tank = ({tank}) => {
     
     return (
         <div className='tank' style={{
-            top: tankStates.position[1],
-            left: tankStates.position[0],
+            top: tankStates.position[1]*posRatio.heightRatio,
+            left: tankStates.position[0]*posRatio.widthRatio,
             display: tankStates.hidden? 'none': 'block',
             backgroundImage: `url(${tankStates.imageUrl})`,
             backgroundPosition: tankStates.spriteLocation,

@@ -7,7 +7,7 @@ import {getCurrentPosition, directionToRotateDegree,
     obeserveBoundaries} from '../../config/functions';
 import store from '../../store/store';
 
-import {SPRITE_SIZE, FLAG_POSITION} from '../../config/constants';
+import {SPRITE_SIZE, FLAG_POSITION, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import BulletPic from '../../assets/bullet/bullet.png';
 
 // import find_star from '../../assets/sounds/find_star.mp3';
@@ -29,26 +29,31 @@ const Bullet = ({bullet}) => {
         ...bullet, 
         rotate: directionToRotateDegree(bullet.direction),
         is_player: bullet.is_player? true:false,
-        display: true});
+        display: false});
 
     const [isRunningInterval, setIsRunningInterval] = useState(true);
-
+    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
     let interval = null;
     
     useEffect(() => {
         if (isRunningInterval)
             interval = setInterval(() => tick(), 50);
-        else {
-            setBulletStates(bulletStates => ({
-                ...bulletStates,
-                display: false
-            }));
+        else 
             clearInterval(interval);
-        }
+
+        setBulletStates(bulletStates => ({
+            ...bulletStates,
+            display: isRunningInterval
+        }));
         return () => clearInterval(interval);
     }, [isRunningInterval]);
 
     useEffect(() => {
+        setPosRatio({
+            widthRatio: document.getElementsByClassName('bullets-container')[0].offsetWidth/MAP_WIDTH,
+            heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
+        });
+
         if (!(obeserveBoundaries(bulletStates.position) && obeserveImpassable(bulletStates.position)))
             setIsRunningInterval(false);
     }, [bulletStates]);
@@ -147,164 +152,13 @@ const Bullet = ({bullet}) => {
 
     return (
         <div className='bullet' style={{
-            top: bulletStates.position[1],
-            left: bulletStates.position[0],
+            top: bulletStates.position[1]*posRatio.heightRatio,
+            left: bulletStates.position[0]*posRatio.widthRatio,
             display: bulletStates.display? 'block':'none',
             backgroundImage: `url(${BulletPic})`,
             transform: `rotate(${bulletStates.rotate}deg)`,
         }}/>
     )
 }
-
-// class Bullet extends React.Component {
-//     constructor(props) {
-//        super(props)
-//        this.state = {
-//          direction: props.bullet.direction,
-//          position: props.bullet.position,
-//          rotate: directionToRotateDegree(props.bullet.direction),
-//          display: true,
-//          is_player: props.bullet.is_player
-//        }
-//      }
-   
-//     componentDidMount() {
-//        this.timerID = setInterval(() => this.tick(), 50)
-//     }
-   
-//     componentWillUnmount() {
-//        clearInterval(this.timerID)
-//     }  
-   
-//     tick() {
-//        let newPos = getCurrentPosition(this.state.direction, this.state.position, 5)
-//        this.setState({
-//          position: newPos
-//        })
-   
-//        if (!(obeserveBoundaries(newPos) && this.obeserveImpassable(newPos))) {
-//             this.setState({
-//                 display: false
-//             })      
-//             clearInterval(this.timerID)      
-//        }
-//     }
-   
-//     obeserveImpassable(newPos) {
-//        const tiles = store.getState().mapReducer.tiles
-//        const y = newPos[1] / SPRITE_SIZE
-//        const x = newPos[0] / SPRITE_SIZE
-//        const nextTile = tiles[y][x]
-//        this.hitTank(tiles, newPos, x, y)    
-//        this.hitPlayer(tiles, newPos, x, y)
-//        this.updateTiles(tiles, newPos, x, y)
-//        return nextTile < 5
-//     }
-   
-//     releaseBoom(tiles, x, y) {
-//        tiles[y][x] = 9
-//        store.dispatch({
-//             type: 'ADD_TILES',
-//             payload: tiles
-//        })
-//        setTimeout(() => {
-//             tiles[y][x] = 0
-//             store.dispatch({
-//                 type: 'UPDATE_TILES',
-//                 payload: tiles
-//             })
-//        }, 100)
-//     }
-   
-//     hitTank(tiles, newPos, x, y) {
-//         const tanks = store.getState().tankReducer.tanks;
-//         if (!tanks) return;
-//         tanks.forEach(tank => {
-//             if (JSON.stringify(tank.position) === JSON.stringify(newPos)) {
-//                 console.log("hint tank " + tank.key_index)
-//                 this.releaseBoom(tiles, x, y);
-//                 store.dispatch({
-//                     type: 'REMOVE_TANK',
-//                     payload: tank.key_index
-//                 })
-//                 // get current tanks state
-//                 if (store.getState().tankReducer.tanks.length === 0) {
-//                     store.dispatch({
-//                         type: 'GAME_WIN'
-//                     })
-//                 }
-//             }
-//         })
-//     }
-   
-//     hitPlayer(tiles, newPos, x, y) {
-//         if (this.state.is_player) return;
-//         const player = store.getState().playerReducer;
-//         if (JSON.stringify(player.position) === JSON.stringify(newPos)) {
-//             console.log("hint player at " + newPos)
-//             this.releaseBoom(tiles, x, y)
-//             store.dispatch({
-//                 type: 'HIDE_PLAYER'
-//             })
-//             store.dispatch({
-//                 type: 'GAME_OVER'
-//             })  
-//             store.dispatch({
-//                 type: 'REMOVE_TANKS'
-//             })               
-//         }
-//     }  
-   
-//     updateTiles(tiles, newPos, x, y) {
-//         const nextTile = tiles[y][x]
-//         switch(Math.round(nextTile)) {      
-//             case 5:
-//                 this.releaseBoom(tiles, x, y)
-//                 break
-//             case 10:
-//                 FLAG_POSITION.map((row, index) => tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
-//                 store.dispatch({
-//                     type: 'ADD_TILES',
-//                     payload: tiles
-//                 }) 
-//                 store.dispatch({
-//                     type: 'GAME_OVER'
-//                 })    
-//                 store.dispatch({
-//                     type: 'REMOVE_TANKS'
-//                 })                               
-//                 break
-//             case 12:
-//                 this.releaseBoom(tiles, x, y);
-//                 setTimeout(() => {
-//                     tiles[y][x] = 4
-//                     store.dispatch({
-//                         type: 'ADD_TILES',
-//                         payload: tiles
-//                     })
-//                 }, 100);
-//                 console.log("find tresure at " + newPos)
-//                 break
-//             default:
-//                 break
-//         }
-//     }
-   
-//     render() {
-//         return(
-//             <div style={{
-//                 top: this.state.position[1],
-//                 left: this.state.position[0],
-//                 backgroundImage: `url(${BulletPic})`,
-//                 width: '20px',
-//                 height: '20px',
-//                 position: 'absolute',
-//                 backgroundPosition: "0px 0px",
-//                 display: this.state.display === false ? "none" : "block",
-//                 transform: `rotate(${this.state.rotate}deg)`
-//             }}/>
-//         )
-//     }
-// }
 
 export default Bullet;
