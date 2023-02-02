@@ -1,16 +1,5 @@
 .world-container {
-    // position: relative;
-    // width: 800px;
-    // height: 480px;
-    // max-width: 800px;
-    // width: 100%;
-    // height: auto;
-    // margin: 5% auto;
     border: 4px solid white;
-
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
 }
