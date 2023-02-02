@@ -38,8 +38,8 @@ const World = () => {
 
     // const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
 
-    useEffect(() => {
-        console.log("HHHHHHH    ", window.screen.orientation.type);
+    // useEffect(() => {
+        // console.log("HHHHHHH    ", window.screen.orientation.type);
         // let portrait = window.matchMedia("(orientation: portrait)");
         // portrait.addEventListener("change", orientationChange);
         
@@ -47,7 +47,7 @@ const World = () => {
         // window.screen.orientation.addEventListener('change', orientationChange);
         // window.screen.orientation.onchange = orientationChange;
         // window.addEventListener('resize', orientationChange);
-    }, []);
+    // }, []);
 
     // useEffect(() => {
     //     gamePause(orientationType.startsWith('portrait'));
