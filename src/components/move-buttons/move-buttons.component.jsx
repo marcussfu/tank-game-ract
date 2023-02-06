@@ -6,7 +6,7 @@ import './move-buttons.styles.scss';
 const MoveButtons = () => {
     const {game_over, game_win, game_start, game_pause} = useSelector(state => state.worldReducer);
 
-    const handleClick = (keyCode) => {console.log("KKKKKK");
+    const handleClick = (keyCode) => {
         let event = document.createEvent('Events');
         event.initEvent('keydown', true, true);
         event.keyCode = keyCode;
@@ -49,8 +49,8 @@ const MoveButtons = () => {
                             stop={handleStop}
                         ></Joystick>
                     </div>
-                    <div className='control fire'>
-                        <div onClick={(e) => handleUpClick(32)}>Fire</div>       
+                    <div className='control fire' onClick={(e) => handleUpClick(32)}>
+                        Fire 
                     </div> 
                 </>:
                 <></>

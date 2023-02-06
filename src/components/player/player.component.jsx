@@ -119,13 +119,13 @@ const Player = ({player}) => {
             switch (e.keyCode) {
                 // case 32:
                 //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
-                case 37:
+                case 37: case 65:
                     return setNewDir('WEST');
-                case 38:
+                case 38: case 87:
                     return setNewDir('NORTH');
-                case 39:
+                case 39: case 68:
                     return setNewDir('EAST');
-                case 40:
+                case 40: case 83:
                     return setNewDir('SOUTH');
                 default:
                     return console.log(e.keyCode);
@@ -139,7 +139,7 @@ const Player = ({player}) => {
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
             switch (e.keyCode) {
-                case 32:
+                case 32: case 13:
                     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 default:
                     return console.log(e.keyCode);
