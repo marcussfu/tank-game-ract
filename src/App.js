@@ -6,16 +6,10 @@ import './App.styles.scss';
 
 function App() {
   return (
-    <div style={{
-      backgroundColor: 'brown',
-    }}>
-        <MoveButtons />
-        <div className='app-container'>
-          <RotateWarning />
-          <World />
-      </div>
+    <div className='app-container'>
+        <RotateWarning />
+        <World />
     </div>
-    
   );
 }
 

@@ -1,0 +1,14 @@
+
+.control-panel-container {
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (orientation:portrait) {
+    .control-panel-container {
+        display: none;
+    }
+}

@@ -11,6 +11,9 @@ import GameStart from '../../components/game-start/game-start.component';
 // import MoveButtons from '../../components/move-buttons/move-buttons.component';
 import StateBar from '../../components/state-bar/state-bar.component';
 
+import ControlPanel from '../../components/control-panel/control-panel.component';
+import {Joystick} from 'react-joystick-component';
+
 import {setupTiles} from '../../config/functions';
 import {tiles} from '../../config/maps/map_1';
 
@@ -24,11 +27,15 @@ import enemyTank from '../../assets/tank/enemyTank.png';
 import './world.styles.scss';
 
 const World = () => {
-    const {setTiles, setTank, addPlayer, gamePause} = useActions();
+    const {setTiles, setTank, addPlayer, gamePause, setBullet, movePlayer,
+        removeTanks, gameWin} = useActions();
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
     const {game_over, game_win, game_start, short_of_time, game_pause} = useSelector(state => state.worldReducer);
     const bgVolume = useSelector(state => state.settingReducer.bgVolume);
+
+    // const tiles = useSelector(state => state.mapReducer.tiles);
+    const shootVolume = useSelector(state => state.settingReducer.shootVolume);
 
     // const bgmAudio = new Audio(bgm);
     const gameOverAudio = new Audio(game_over_bgm);
@@ -36,22 +43,10 @@ const World = () => {
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
 
-    // const [orientationType, setOrientationType] = useState('portrait');//(window.screen.orientation.type);
-
-    // useEffect(() => {
-        // console.log("HHHHHHH    ", window.screen.orientation.type);
-        // let portrait = window.matchMedia("(orientation: portrait)");
-        // portrait.addEventListener("change", orientationChange);
-        
-        // setOrientationType(window.screen.orientation.type);
-        // window.screen.orientation.addEventListener('change', orientationChange);
-        // window.screen.orientation.onchange = orientationChange;
-        // window.addEventListener('resize', orientationChange);
-    // }, []);
-
-    // useEffect(() => {
-    //     gamePause(orientationType.startsWith('portrait'));
-    // }, [orientationType]);
+    const [newDir, setNewDir] = useState('');
+    const [bulletShootedCount, setBulletShootedCount] = useState(0);
+    const [rotate, setRotate] = useState(0);
+    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
     useEffect(() => {
         bgmAudio.volume = bgVolume;
@@ -97,23 +92,23 @@ const World = () => {
             }
             addPlayer(playerState);
 
-            setTank({
-                position: [0,0],
-                direction: 'SOUTH',
-                key_index: Date.now()
-            });
+            // setTank({
+            //     position: [0,0],
+            //     direction: 'SOUTH',
+            //     key_index: Date.now()
+            // });
 
-            setTank({
-                position: [780,460],
-                direction: 'NORTH',
-                key_index: Date.now()+1
-            });
+            // setTank({
+            //     position: [780,460],
+            //     direction: 'NORTH',
+            //     key_index: Date.now()+1
+            // });
 
-            setTank({
-                position: [740,0],
-                direction: 'WEST',
-                key_index: Date.now()+2
-            });
+            // setTank({
+            //     position: [740,0],
+            //     direction: 'WEST',
+            //     key_index: Date.now()+2
+            // });
         }
     }, [game_start]);
 
@@ -151,24 +146,53 @@ const World = () => {
         }
     };
 
+    const handleMove = (e) => {
+        console.log("move  ",e);
+        // handleClick(moveKeys[e.direction]);
+    };
+
+    const handleStop = () => {
+        console.log("stop  ");
+    };
+
+    const fireHandler = () => {
+        console.log("fire");
+    };
+
     return (
         <div className='world-container'>
-            {game_start? 
-                <>
-                    {/* <MoveButtons /> */}
-                    <Map />
-                    {(!game_pause && player.position.length > 0) && <Player player={player}/>}
-                    {!game_pause && tanks.map(tank =>
-                        <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
-                    {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
-                    <StateBar />
-                    {/* <GameIntro /> */}
-                </>
-                :
-                <>
-                    <GameStart />
-                </>
-            }
+            {/* <MoveButtons /> */}
+            <ControlPanel>
+                <Joystick
+                    size={80}
+                    baseColor="hsl(219, 84%, 56%)"
+                    stickColor="hsl(219, 84%, 30%)"
+                    move={handleMove}
+                    stop={handleStop}
+                ></Joystick>
+            </ControlPanel>
+            <div className='playground-container'>
+                {game_start? 
+                    <>
+                        <Map />
+                        {(!game_pause && player.position.length > 0) && <Player player={player}/>}
+                        {!game_pause && tanks.map(tank =>
+                            <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
+                        {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
+                        <StateBar />
+                        {/* <GameIntro /> */}
+                    </>
+                    :
+                    <>
+                        <GameStart />
+                    </>
+                }
+            </div>
+            <ControlPanel>
+                <div className='fire-handler' onClick={() => fireHandler()}>
+                    FIRE      
+                </div>
+            </ControlPanel>
         </div>
     )
 }

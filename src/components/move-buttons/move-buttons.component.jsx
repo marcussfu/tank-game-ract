@@ -42,7 +42,7 @@ const MoveButtons = () => {
                 <>
                     <div className='control direction'>
                         <Joystick
-                            size={100}
+                            size={80}
                             baseColor="hsl(219, 84%, 56%)"
                             stickColor="hsl(219, 84%, 30%)"
                             move={handleMove}

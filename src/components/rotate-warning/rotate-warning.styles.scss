@@ -1,6 +1,9 @@
 .rotate-warning {
     position: absolute;
-    inset: 0;
+    // inset: 0;
+    height: 100%;
+    width: 100%;
+
     font-size: 30px;
     color: red;
     z-index: 1000;

@@ -3,20 +3,20 @@
 
     .control {
         position: absolute;
-        bottom: 30%;
+        top: 60%;
         text-align: center;
         z-index: 1000;
     }
 
     .direction {
-        left: 3%;
+        left: 2.5%;
     }
 
     .fire {
-        right: 3%;
+        right: 2.5%;
         background-color: darkturquoise;
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         display: flex;
         justify-content: center;

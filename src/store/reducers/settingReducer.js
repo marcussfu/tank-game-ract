@@ -2,7 +2,7 @@ import {SET_BG_VOLUME, SET_SHOOT_VOLUME} from '../../config/types';
 
 const intialState = {
     bgVolume: 0,
-    shootVolume: 1,
+    shootVolume: 0,
 }
 
 export const settingReducer = (state=intialState, action) => {
