@@ -22,38 +22,57 @@ const Tank = ({tank}) => {
         bulletShootedCount: 0
     });
     const [fireTick, setFireTick] = useState(0);
-    // const [isRunningInterval, setIsRunningInterval] = useState(true);
+    const [isRunningInterval, setIsRunningInterval] = useState(true);
     const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
+    const [toFire, setToFire] = useState(false);
+
+    let interval = null;
+
+    useEffect(() => {
+        if (isRunningInterval)
+            interval = setInterval(() => tick(), 200);
+            
+        return () => clearInterval(interval);
+    }, [isRunningInterval]);
 
     useEffect(() => {
         setPosRatio({
             widthRatio: document.getElementsByClassName('bullets-container')[0].offsetWidth/MAP_WIDTH,
             heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
         });
-
-        const interval = setInterval(() => tick(), 200);
-        return () => {
-            clearInterval(interval)
-        };
+        
+        updateTank({
+            key_index: tankStates.key_index,
+            position: tankStates.position,
+            direction: tankStates.direction
+        })
     }, [tankStates]);
 
     useEffect(() => {
         if (fireTick === 5) {
+            setToFire(true);
+            // const shootByTankAudio = new Audio(shoot_by_tank);
+            // shootByTankAudio.volume = shootVolume;
+            // shootByTankAudio.play();
+        }
+        else
+            setToFire(false);
+    }, [fireTick]);
+
+    useEffect(() => {
+        if (toFire) {
             setFireTick(0);
             setTankStates(tankStates => ({
                 ...tankStates,
                 bulletShootedCount: tankStates.bulletShootedCount + 1
             }))
             setBullet({
-                position: tankStates.position,
+                position: getCurrentPosition(tankStates.direction, tankStates.position),
                 direction: tankStates.direction,
                 key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount
             });
-            const shootByTankAudio = new Audio(shoot_by_tank);
-            shootByTankAudio.volume = shootVolume;
-            shootByTankAudio.play();
         }
-    }, [fireTick]);
+    }, [toFire]);
 
     const obeserveImpassable = (newPos, tiles) => {
         const y = newPos[1] / SPRITE_SIZE;
@@ -62,29 +81,26 @@ const Tank = ({tank}) => {
     };
 
     const tick = () => {
-        const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
-        const random = Math.random()
-        if (random >= 0.9 || !(obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles))) {
-            const dir = getChangeDirection();
-            setTankStates(tankStates => ({
-                ...tankStates,
-                direction: dir,
-                rotate: directionToRotateDegree(dir)
-            }))
-        }
-        else {
-            setTankStates(tankStates => ({
-                ...tankStates,
-                position: newPos,
-                rotate: directionToRotateDegree(tankStates.direction)
-            }))
-            setFireTick(fireTick => fireTick+1);
-        }
+        setTankStates(tankStates => {
+            const newPos = getCurrentPosition(tankStates.direction, tankStates.position);
+            const random = Math.random();
 
-        updateTank({
-            key_index: tankStates.key_index,
-            position: tankStates.position,
-            direction: tankStates.direction
+            if (random >= 0.9 || !(obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles))) {
+                const dir = getChangeDirection();
+                return {
+                    ...tankStates,
+                    direction: dir,
+                    rotate: directionToRotateDegree(dir)
+                }
+            }
+            else {
+                setFireTick(fireTick => fireTick+1);
+                return {
+                    ...tankStates,
+                    position: newPos,
+                    rotate: directionToRotateDegree(tankStates.direction)
+                }
+            }
         })
     };
     
