@@ -59,29 +59,34 @@ const World = () => {
     const [rotate, setRotate] = useState(0);
     const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
+    const [isRunningInterval, setIsRunningInterval] = useState(false);
+
     let player_move_interval = null;
+
+    useEffect(() => {
+        // setPosRatio({
+        //     widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
+        //     heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
+        // });
+
+        if (isRunningInterval) {
+            player_move_interval = setInterval(() => {
+                attemptMove(newDir);
+            }, 50);
+        }
+        else 
+            clearInterval(player_move_interval);
+            
+        return () => clearInterval(player_move_interval);
+    }, [isRunningInterval, player]);
+
+    useEffect(() => {
+        setIsRunningInterval(newDir === ''? false: true);
+    }, [newDir]);
 
     useEffect(() => {
         fireBullet(bulletShootedCount);
     }, [bulletShootedCount]);
-
-    useEffect(() => {
-        setPosRatio({
-            widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
-            heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
-        });
-        
-        if (!player_move_interval) {
-            player_move_interval = setInterval(() => {
-                if (newDir == '') return;
-                attemptMove(newDir);
-            }, 200);
-        }
-        else if (player_move_interval && newDir == '') {
-            clearInterval(player_move_interval);
-        }
-        return () => clearInterval(player_move_interval);
-    }, [newDir, player]);
 
     useEffect(() => {
         bgmAudio.volume = bgVolume;
@@ -126,6 +131,11 @@ const World = () => {
                 bullets: []
             }
             addPlayer(playerState);
+
+            setPosRatio({
+                    widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
+                    heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
+                });
 
             // setTank({
             //     position: [0,0],
@@ -205,7 +215,6 @@ const World = () => {
             spriteLocation: newSpriteLocation,
             walkIndex: newWalkIndex
         });
-        // console.log("player moves to " + pos)
     }
 
     const getSpriteLocation = (direction, walkIndex) => {
@@ -224,31 +233,25 @@ const World = () => {
     }
     
     const moveHandler = (direction) => {
-        console.log("move  ", direction);
         setNewDir(direction);
     };
 
     const stopHandler = () => {
-        console.log("stop  ");
         setNewDir('');
     };
 
     const fireHandler = () => {
-        console.log("fire");
         setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
     };
 
     const attemptMove = (dir) => {
-        // if (dir === '') return;
+        if (dir === '') return;
         setRotate(directionToRotateDegree(dir));
         const newPos = getCurrentPosition(dir, player.position);
-        console.log("attemptMove    ", player.position, newPos);
         
         dispatchMove(dir, 
             (obeserveBoundaries(newPos) && obeserveImpassable(newPos, currTiles)? 
                 newPos: player.position));
-        
-        // setNewDir('');
     }
 
     const fireBullet = (currBulletCount) => {
@@ -282,7 +285,7 @@ const World = () => {
                         <Map />
                         {(!game_pause && player.position.length > 0) && 
                             <Player player={{...player, rotate:rotate, posRatio:posRatio}} 
-                                fireHandler={fireHandler} attemptMove={attemptMove} moveHandler={moveHandler} stopHandler={stopHandler}/>}
+                                fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>}
                         {!game_pause && tanks.map(tank =>
                             <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                         {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}

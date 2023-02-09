@@ -5,8 +5,10 @@
     align-items: center;
     background-color: black;
     height: 100%;
-    overflow: hidden;
-    position: relative;
+    // overflow: hidden;
+    // position: relative;
+    width: 100%;
+    position: fixed;
     
     #title {
         font-family: Pixeloid;
