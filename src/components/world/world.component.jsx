@@ -127,23 +127,23 @@ const World = () => {
             }
             addPlayer(playerState);
 
-            setTank({
-                position: [0,0],
-                direction: 'SOUTH',
-                key_index: Date.now()
-            });
+            // setTank({
+            //     position: [0,0],
+            //     direction: 'SOUTH',
+            //     key_index: Date.now()
+            // });
 
-            setTank({
-                position: [780,460],
-                direction: 'NORTH',
-                key_index: Date.now()+1
-            });
+            // setTank({
+            //     position: [780,460],
+            //     direction: 'NORTH',
+            //     key_index: Date.now()+1
+            // });
 
-            setTank({
-                position: [740,0],
-                direction: 'WEST',
-                key_index: Date.now()+2
-            });
+            // setTank({
+            //     position: [740,0],
+            //     direction: 'WEST',
+            //     key_index: Date.now()+2
+            // });
         }
     }, [game_start]);
 
@@ -287,7 +287,6 @@ const World = () => {
                             <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                         {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
                         <StateBar />
-                        {/* <GameIntro /> */}
                     </>
                     :
                     <>
