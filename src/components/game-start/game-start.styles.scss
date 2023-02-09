@@ -1,7 +1,7 @@
 .game-start-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
     background-color: black;
     height: 100%;
@@ -10,21 +10,55 @@
     width: 100%;
     position: fixed;
     
-    #title {
-        font-family: Pixeloid;
-        font-size: 7vw;
-        color: brown;
+    .title {
+        // font-family: Pixeloid;
+        // font-size: 7vw;
+        // // color: brown;
+        // -webkit-background-clip: text;
+        // background-clip: text;
+        // background-image: url('../../assets/fonts/brick.png');
+        // color: transparent;
+        width: 50%;
+        height: auto;
+        padding: 4vw 0;
     }
 
-    .tank-animation{
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        top: 50%;
-        right: 0;
-        transform: rotate(270deg);
-        animation: cross 7s;
+    .game-start-button-container {
+        display: flex;
+        flex-direction: column;
     }
+
+    .game-start-button-content-container {
+        display: flex;
+        align-items: center;
+        margin-left: -5vw;
+        margin-bottom: 1vw;
+    }
+
+    .select-item-tank1, .select-item-tank2 {
+        margin-right: 2vw;
+        width: 3vw;
+        height: 3vw;
+        background-size: cover;
+    }
+
+    .select-item-tank1 {
+        visibility: visible;
+    }
+
+    .select-item-tank2 {
+        visibility: hidden;
+    }
+
+    // .tank-animation{
+    //     position: absolute;
+    //     width: 20px;
+    //     height: 20px;
+    //     top: 50%;
+    //     right: 0;
+    //     transform: rotate(270deg);
+    //     animation: cross 7s;
+    // }
 }
 
 @keyframes cross {

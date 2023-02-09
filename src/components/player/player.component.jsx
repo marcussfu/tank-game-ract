@@ -40,8 +40,8 @@ const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
                     return moveHandler('EAST');
                 case 40: case 83:
                     return moveHandler('SOUTH');
-                default:
-                    return console.log(e.keyCode);
+                // default:
+                //     return console.log(e.keyCode);
             }
         }
     }
@@ -56,8 +56,8 @@ const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
                 case 32: case 13:
                     return fireHandler();
                 //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
-                default:
-                    return console.log(e.keyCode);
+                // default:
+                //     return console.log(e.keyCode);
             }
         }
     }
