@@ -1,5 +1,6 @@
 
 import { useActions } from '../../store/hooks/useActions';
+import useAudio from '../../store/hooks/useAudio';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
@@ -17,8 +18,10 @@ const GameStart = () => {
     const [isShowTransitionStage, setIsShowTransitionStage] = useState(false);
     const [selectPlayerCount, setSelectPlayerCount] = useState(1);
 
-    const gameStartAudio = new Audio(game_start_bgm);
-    const clickAudio = new Audio(click);
+    // const gameStartAudio = new Audio(game_start_bgm);
+    // const clickAudio = new Audio(click);
+    const gameStartAudio = useAudio(game_start_bgm, {volume: bgVolume});
+    const clickAudio = useAudio(click, {volume: effectVolume});
 
     useEffect(() => {
         window.addEventListener('mouseover', handleMouseOver);

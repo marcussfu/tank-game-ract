@@ -70,7 +70,7 @@ const World = () => {
         if (isRunningInterval) {
             player_move_interval = setInterval(() => {
                 attemptMove(newDir);
-            }, 50);
+            }, 150);
         }
         else 
             clearInterval(player_move_interval);
