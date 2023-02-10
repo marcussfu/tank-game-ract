@@ -6,11 +6,8 @@ import {getCurrentPosition, obeserveBoundaries, directionToRotateDegree} from '.
 import store from '../../store/store';
 import playerTank from '../../assets/tank/playerTank.png';
 
-// import shoot_by_player from '../../assets/sounds/shoot_by_player.mp3';
 import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import './player.styles.scss';
-
-// const shootByPlayerAudio = new Audio(shoot_by_player);
 
 const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
     const {position, direction, spriteLocation, walkIndex, rotate, posRatio} = player;

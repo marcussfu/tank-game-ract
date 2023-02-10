@@ -17,9 +17,7 @@ const GameStart = () => {
     const {bgVolume, effectVolume} = useSelector(state => state.settingReducer);
     const [isShowTransitionStage, setIsShowTransitionStage] = useState(false);
     const [selectPlayerCount, setSelectPlayerCount] = useState(1);
-
-    // const gameStartAudio = new Audio(game_start_bgm);
-    // const clickAudio = new Audio(click);
+    
     const gameStartAudio = useAudio(game_start_bgm, {volume: bgVolume});
     const clickAudio = useAudio(click, {volume: effectVolume});
 
@@ -35,26 +33,27 @@ const GameStart = () => {
     useEffect(() => {
         if (selectPlayerCount === 1) {
             document.getElementById('1p').style.visibility='visible';
-            document.getElementById('game-start-btn-1').style.color = 'gray';
+            document.getElementById('game-start-btn-1').style.color = 'white';
             document.getElementById('2p').style.visibility='hidden';
-            document.getElementById('game-start-btn-2').style.color = 'white';
+            document.getElementById('game-start-btn-2').style.color = 'gray';
         }
         else if (selectPlayerCount === 2) {
             document.getElementById('1p').style.visibility='hidden';
-            document.getElementById('game-start-btn-1').style.color = 'white';
+            document.getElementById('game-start-btn-1').style.color = 'gray';
             document.getElementById('2p').style.visibility='visible';
-            document.getElementById('game-start-btn-2').style.color = 'gray';
+            document.getElementById('game-start-btn-2').style.color = 'white';
         }
     }, [selectPlayerCount]);
 
     const gameStartAction = () => {
-        setIsShowTransitionStage(true);
-        gameStartActionSetTimeOut();
+        setTimeout(() => {
+            setIsShowTransitionStage(true);
+            gameStartActionSetTimeOut();
+        }, 300);
     };
 
     const gameStartActionSetTimeOut = () => {
         setTimeout(() => {
-            gameStartAudio.volume = bgVolume;
             gameStartAudio.play();
             gameStartActionSetTimeOut_1();
         }, 500);
@@ -63,7 +62,7 @@ const GameStart = () => {
     const gameStartActionSetTimeOut_1 = () => {
         setTimeout(() => {
             gameStart();
-        }, 4000);
+        }, 4500);
     };
 
     const selectGameStartAction = () => {
@@ -77,7 +76,7 @@ const GameStart = () => {
         e.preventDefault();
         switch (e.keyCode) {
             case 13:
-                clickAudio.volume = effectVolume;
+                clickAudio.currentTime = 0;
                 clickAudio.play();
                 return selectGameStartAction();
             case 38: case 87:

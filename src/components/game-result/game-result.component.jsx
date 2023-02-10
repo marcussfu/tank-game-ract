@@ -2,8 +2,10 @@
 import { useEffect, Fragment } from 'react';
 import {useSelector} from 'react-redux';
 import { useActions } from '../../store/hooks/useActions';
+import useAudio from '../../store/hooks/useAudio';
 
 import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
+import game_win_bgm from '../../assets/sounds/game_win_bgm.mp3';
 import click from '../../assets/sounds/click.mp3';
 import './game-result.styles.scss';
 
@@ -12,12 +14,11 @@ const GameResult = ({resultText}) => {
     const {bgVolume, effectVolume} = useSelector(state => state.settingReducer);
     const {gameInit} = useActions();
 
-    const gameOverAudio = new Audio(game_over_bgm);
-    const clickAudio = new Audio(click);
+    const gameResultAudio = useAudio(game_over? game_over_bgm:game_win_bgm, {volume: bgVolume});
+    const clickAudio = useAudio(click, {volume: effectVolume});
 
     useEffect(() => {
-        gameOverAudio.volume = bgVolume;
-        gameOverAudio.play();
+        gameResultAudio.play();
 
         window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('keydown', handleKeyDown);
@@ -40,7 +41,6 @@ const GameResult = ({resultText}) => {
     };
 
     const gameRestart = () => {
-        clickAudio.volume = effectVolume;
         clickAudio.play();
         gameInit();
     };
