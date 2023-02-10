@@ -107,6 +107,12 @@ const World = () => {
     }, [short_of_time]);
 
     useEffect(() => {
+        setPosRatio({
+            widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
+            heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
+        });
+        setRotate(0);
+
         if (!game_start)
             bgmAudioInit();
         else {
@@ -131,11 +137,6 @@ const World = () => {
                 bullets: []
             }
             addPlayer(playerState);
-
-            setPosRatio({
-                    widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
-                    heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
-                });
 
             // setTank({
             //     position: [0,0],

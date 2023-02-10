@@ -13,9 +13,11 @@ import './player.styles.scss';
 // const shootByPlayerAudio = new Audio(shoot_by_player);
 
 const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
-    const {position, direction, hidden=false, spriteLocation, walkIndex, rotate, posRatio} = player;
+    const {position, direction, spriteLocation, walkIndex, rotate, posRatio} = player;
+    const [hidden, setHidden] = useState(true);
 
     useEffect(() => {
+        setHidden(false);
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
         return () => {
