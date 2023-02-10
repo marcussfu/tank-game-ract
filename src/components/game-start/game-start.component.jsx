@@ -7,18 +7,15 @@ import Button from '../../components/button/button.component';
 import titleImg from '../../assets/scene/title.png';
 
 import game_start_bgm from '../../assets/sounds/game_start_bgm.mp3';
-import click from '../../assets/sounds/click.mp3';
 
 import './game-start.styles.scss';
 
-const gameStartAudio = new Audio(game_start_bgm);
-const clickAudio = new Audio(click);
-
 const GameStart = () => {
     const {gameStart} = useActions();
-    const {game_start} = useSelector(state => state.worldReducer);
-    const [isShowStartBtn, setIsShowStartBtn] = useState(true);
+    const bgVolume = useSelector(state => state.settingReducer.bgVolume);
+    const [isShowTransitionStage, setIsShowTransitionStage] = useState(false);
     const [selectPlayerCount, setSelectPlayerCount] = useState(1);
+    const gameStartAudio = new Audio(game_start_bgm);
 
     useEffect(() => {
         window.addEventListener('mouseover', handleMouseOver);
@@ -28,10 +25,6 @@ const GameStart = () => {
             window.removeEventListener('mouseover', handleMouseOver);
         }
     }, []);
-
-    useEffect(() => {
-        setIsShowStartBtn(!game_start);
-    }, [game_start]);
 
     useEffect(() => {
         if (selectPlayerCount === 1) {
@@ -49,23 +42,22 @@ const GameStart = () => {
     }, [selectPlayerCount]);
 
     const gameStartAction = () => {
-        if (!isShowStartBtn) return;
-        setIsShowStartBtn(false);
-        clickAudio.play();
+        setIsShowTransitionStage(true);
         gameStartActionSetTimeOut();
     };
 
     const gameStartActionSetTimeOut = () => {
         setTimeout(() => {
+            gameStartAudio.volume = bgVolume;
             gameStartAudio.play();
             gameStartActionSetTimeOut_1();
-        }, 1200);
+        }, 500);
     };
 
     const gameStartActionSetTimeOut_1 = () => {
         setTimeout(() => {
             gameStart();
-        }, 5000);
+        }, 4000);
     };
 
     const selectGameStartAction = () => {
@@ -100,20 +92,24 @@ const GameStart = () => {
 
     return (
         <div className='game-start-container'>
-            <img className='title' src={titleImg} alt='title' />
-            <div id='game-start-button-container-id' className='game-start-button-container'>
-                <div className='game-start-button-content-container'>
-                    <div id='1p' className='select-item-tank1' />
-                    <Button id='game-start-btn-1' onClick={() => gameStartAction()}>1 PLAYER</Button>
+            {!isShowTransitionStage && <>
+                <img className='title' src={titleImg} alt='title' />
+                <div id='game-start-button-container-id' className='game-start-button-container'>
+                    <div className='game-start-button-content-container'>
+                        <div id='1p' className='select-item-tank1' />
+                        <Button id='game-start-btn-1' clickFunction={gameStartAction}>1 PLAYER</Button>
+                    </div>
+                    <div className='game-start-button-content-container'>
+                        <div id='2p' className='select-item-tank2' />
+                        <Button id='game-start-btn-2' clickFunction={goto2p}>2 PLAYERS</Button>
+                    </div>
                 </div>
-                <div className='game-start-button-content-container'>
-                    <div id='2p' className='select-item-tank2' />
-                    <Button id='game-start-btn-2' onClick={() => goto2p()}>2 PLAYERS</Button>
-                </div>
-            </div>
-            {/* {!isShowStartBtn && <div className='tank-animation' style={{
-                backgroundImage: `url(${playerTank})`
-            }}/>} */}
+            </>}
+            {isShowTransitionStage && <div className='stage-container'>
+                <div className='stage-bg-up'></div>
+                <div className='stage-bg-down'></div>
+                <div className='stage-text'>STAGE&nbsp;&nbsp;&nbsp;&nbsp;1</div>
+            </div>}
         </div>
     )
 };

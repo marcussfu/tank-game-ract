@@ -29,4 +29,4 @@ export const SHORT_OF_TIME = 'SHORT_OF_TIME';
 
 // setting action
 export const SET_BG_VOLUME = 'SET_BG_VOLUME';
-export const SET_SHOOT_VOLUME = 'SET_SHOOT_VOLUME';
+export const SET_EFFECT_VOLUME = 'SET_EFFECT_VOLUME';

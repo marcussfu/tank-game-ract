@@ -39,7 +39,7 @@ const World = () => {
     const bgVolume = useSelector(state => state.settingReducer.bgVolume);
 
     const currTiles = useSelector(state => state.mapReducer.tiles);
-    const shootVolume = useSelector(state => state.settingReducer.shootVolume);
+    const effectVolume = useSelector(state => state.settingReducer.effectVolume);
 
     // const bgmAudio = new Audio(bgm);
     const gameOverAudio = new Audio(game_over_bgm);
@@ -263,7 +263,7 @@ const World = () => {
             is_player: true
         });
         const shootByPlayerAudio = new Audio(shoot_by_player);
-        shootByPlayerAudio.volume = shootVolume;
+        shootByPlayerAudio.volume = effectVolume;
         shootByPlayerAudio.play();
     }
 

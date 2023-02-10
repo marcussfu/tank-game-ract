@@ -61,8 +61,8 @@ BootstrapDialogTitle.propTypes = {
 
 const SettingDialog = () => {
   const [open, setOpen] = useState(false);
-  const {bgVolume, shootVolume} = useSelector(state => state.settingReducer);
-  const {setBgVolume, setShootVolume} = useActions();
+  const {bgVolume, effectVolume} = useSelector(state => state.settingReducer);
+  const {setBgVolume, setEffectVolume} = useActions();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,8 +76,8 @@ const SettingDialog = () => {
     setBgVolume(value);
   };
 
-  const setShootVolumeHandler = value => {
-    setShootVolume(value);
+  const setEffectVolumeHandler = value => {
+    setEffectVolume(value);
   };
 
   return (
@@ -95,7 +95,7 @@ const SettingDialog = () => {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <VolumeSlider volumeProperty={{audioTitle: 'BG', volumeValue: bgVolume, setAudioVolumeFunc: setBgVolumeHandler}}/>
-          <VolumeSlider volumeProperty={{audioTitle: 'Shoot', volumeValue: shootVolume, setAudioVolumeFunc: setShootVolumeHandler}}/>
+          <VolumeSlider volumeProperty={{audioTitle: 'Shoot', volumeValue: effectVolume, setAudioVolumeFunc: setEffectVolumeHandler}}/>
         </DialogContent>
         {/* <DialogActions>
           <Button autoFocus onClick={handleClose}>
