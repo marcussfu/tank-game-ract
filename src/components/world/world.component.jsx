@@ -6,9 +6,7 @@ import Map from '../../components/map/map.component';
 import Tank from "../../components/tank/tank.component";
 import Player from '../../components/player/player.component';
 import GameResult from '../../components/game-result/game-result.component';
-// import GameIntro from '../../components/game-intro/game-intro.component';
 import GameStart from '../../components/game-start/game-start.component';
-// import MoveButtons from '../../components/move-buttons/move-buttons.component';
 import StateBar from '../../components/state-bar/state-bar.component';
 
 import ControlPanel from '../../components/control-panel/control-panel.component';
@@ -138,23 +136,23 @@ const World = () => {
             }
             addPlayer(playerState);
 
-            // setTank({
-            //     position: [0,0],
-            //     direction: 'SOUTH',
-            //     key_index: Date.now()
-            // });
+            setTank({
+                position: [0,0],
+                direction: 'SOUTH',
+                key_index: Date.now()
+            });
 
-            // setTank({
-            //     position: [780,460],
-            //     direction: 'NORTH',
-            //     key_index: Date.now()+1
-            // });
+            setTank({
+                position: [780,460],
+                direction: 'NORTH',
+                key_index: Date.now()+1
+            });
 
-            // setTank({
-            //     position: [740,0],
-            //     direction: 'WEST',
-            //     key_index: Date.now()+2
-            // });
+            setTank({
+                position: [740,0],
+                direction: 'WEST',
+                key_index: Date.now()+2
+            });
         }
     }, [game_start]);
 
@@ -270,7 +268,6 @@ const World = () => {
 
     return (
         <div className='world-container'>
-            {/* <MoveButtons /> */}
             <ControlPanel>
                 <Joystick
                     size={80}
