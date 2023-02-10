@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import Button from '../../components/button/button.component';
-
 import titleImg from '../../assets/scene/title.png';
-import selectItemTank from '../../assets/scene/select-item-tank.png';
 
 import game_start_bgm from '../../assets/sounds/game_start_bgm.mp3';
 import click from '../../assets/sounds/click.mp3';
@@ -23,9 +21,11 @@ const GameStart = () => {
     const [selectPlayerCount, setSelectPlayerCount] = useState(1);
 
     useEffect(() => {
+        window.addEventListener('mouseover', handleMouseOver);
         window.addEventListener('keydown', handleKeyDown);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mouseover', handleMouseOver);
         }
     }, []);
 
@@ -34,18 +34,17 @@ const GameStart = () => {
     }, [game_start]);
 
     useEffect(() => {
-        // if (!isShowStartBtn) {
-        //     document.getElementById('title').style.cssText += 'animation: disappear 8s;';
-        //     document.getElementById('gameStartBtn').style.cssText += 'animation: disappear 8s;';
-        // }
-
         if (selectPlayerCount === 1) {
             document.getElementById('1p').style.visibility='visible';
+            document.getElementById('game-start-btn-1').style.color = 'gray';
             document.getElementById('2p').style.visibility='hidden';
+            document.getElementById('game-start-btn-2').style.color = 'white';
         }
         else if (selectPlayerCount === 2) {
             document.getElementById('1p').style.visibility='hidden';
+            document.getElementById('game-start-btn-1').style.color = 'white';
             document.getElementById('2p').style.visibility='visible';
+            document.getElementById('game-start-btn-2').style.color = 'gray';
         }
     }, [selectPlayerCount]);
 
@@ -73,11 +72,7 @@ const GameStart = () => {
         if (document.getElementById('1p').style.visibility === 'visible')
             gameStartAction();
         else if (document.getElementById('2p').style.visibility === 'visible')
-            console.log("2p");
-
-        window.removeEventListener('keydown', handleKeyDown);
-        document.getElementById('game-start-btn-1').disabled = true;
-        document.getElementById('game-start-btn-2').disabled = true;
+            goto2p();
     }
 
     const handleKeyDown = (e) => {
@@ -92,24 +87,28 @@ const GameStart = () => {
         }
     }
 
-    const clickItem = (item) => {
-        setSelectPlayerCount(item);
-        setTimeout(() => {
-            selectGameStartAction();
-        }, 100);
-    }
+    const handleMouseOver = (e) => {
+        if (e.target.id === 'game-start-btn-1')
+            setSelectPlayerCount(1);
+        else if (e.target.id === 'game-start-btn-2')
+            setSelectPlayerCount(2);
+    };
+
+    const goto2p = () => {
+        console.log("2p");
+    };
 
     return (
         <div className='game-start-container'>
             <img className='title' src={titleImg} alt='title' />
             <div id='game-start-button-container-id' className='game-start-button-container'>
                 <div className='game-start-button-content-container'>
-                    <div id='1p' className='select-item-tank1' style={{backgroundImage: `url(${selectItemTank})`}}/>
-                    <Button id='game-start-btn-1' onClick={() => clickItem(1)}>1 PLAYER</Button>
+                    <div id='1p' className='select-item-tank1' />
+                    <Button id='game-start-btn-1' onClick={() => gameStartAction()}>1 PLAYER</Button>
                 </div>
                 <div className='game-start-button-content-container'>
-                    <div id='2p' className='select-item-tank2' style={{backgroundImage: `url(${selectItemTank})`}}/>
-                    <Button id='game-start-btn-2' onClick={() => clickItem(2)}>2 PLAYERS</Button>
+                    <div id='2p' className='select-item-tank2' />
+                    <Button id='game-start-btn-2' onClick={() => goto2p()}>2 PLAYERS</Button>
                 </div>
             </div>
             {/* {!isShowStartBtn && <div className='tank-animation' style={{

@@ -11,13 +11,6 @@
     position: fixed;
     
     .title {
-        // font-family: Pixeloid;
-        // font-size: 7vw;
-        // // color: brown;
-        // -webkit-background-clip: text;
-        // background-clip: text;
-        // background-image: url('../../assets/fonts/brick.png');
-        // color: transparent;
         width: 50%;
         height: auto;
         padding: 4vw 0;
@@ -40,6 +33,8 @@
         width: 3vw;
         height: 3vw;
         background-size: cover;
+
+        animation: tank-walk 0.1s infinite alternate;
     }
 
     .select-item-tank1 {
@@ -69,5 +64,14 @@
 @keyframes disappear {
     from {opacity: 1;}
     to {opacity: 0;}
+}
+
+@keyframes tank-walk {
+    0% {
+        background-image: url('../../assets/scene/select-item-tank.png');
+    }
+    100% {
+        background-image: url('../../assets/scene/select-item-tank-1.png');
+    }
 }
 
