@@ -5,10 +5,10 @@ import { useActions } from '../../store/hooks/useActions';
 
 import {TIME_LIMIT} from '../../config/constants'
 
-import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
+// import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
 import './timing.styles.scss';
 
-const gameOverAudio = new Audio(game_over_bgm);
+// const gameOverAudio = new Audio(game_over_bgm);
 
 const Timing = () => {
     const {game_over, game_win} = useSelector(state => state.worldReducer);
@@ -23,11 +23,11 @@ const Timing = () => {
             interval = setInterval(() => {
                 settimeValue(timeValue => timeValue - 1);
             }, 1000);
-            gameOverAudio.pause();
-            gameOverAudio.currentTime = 0;
+            // gameOverAudio.pause();
+            // gameOverAudio.currentTime = 0;
         }
         else {
-            gameOverAudio.play();
+            // gameOverAudio.play();
             clearInterval(interval);
         }
         return () => clearInterval(interval);

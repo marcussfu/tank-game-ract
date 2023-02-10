@@ -7,15 +7,18 @@ import Button from '../../components/button/button.component';
 import titleImg from '../../assets/scene/title.png';
 
 import game_start_bgm from '../../assets/sounds/game_start_bgm.mp3';
+import click from '../../assets/sounds/click.mp3';
 
 import './game-start.styles.scss';
 
 const GameStart = () => {
     const {gameStart} = useActions();
-    const bgVolume = useSelector(state => state.settingReducer.bgVolume);
+    const {bgVolume, effectVolume} = useSelector(state => state.settingReducer);
     const [isShowTransitionStage, setIsShowTransitionStage] = useState(false);
     const [selectPlayerCount, setSelectPlayerCount] = useState(1);
+
     const gameStartAudio = new Audio(game_start_bgm);
+    const clickAudio = new Audio(click);
 
     useEffect(() => {
         window.addEventListener('mouseover', handleMouseOver);
@@ -71,6 +74,8 @@ const GameStart = () => {
         e.preventDefault();
         switch (e.keyCode) {
             case 13:
+                clickAudio.volume = effectVolume;
+                clickAudio.play();
                 return selectGameStartAction();
             case 38: case 87:
                 return setSelectPlayerCount(1);

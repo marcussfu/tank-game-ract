@@ -1,92 +1,62 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
+import {useSelector} from 'react-redux';
 import { useActions } from '../../store/hooks/useActions';
 
-import Button from '../../components/button/button.component';
-
-import {MAP_HEIGHT, MAP_WIDTH} from '../../config/constants'
-
+import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
 import click from '../../assets/sounds/click.mp3';
 import './game-result.styles.scss';
 
-const initState = {
-    height: 0,
-    position: [280, 230]
-}
-
-const clickAudio = new Audio(click);
-
-const GameResult = ({gameResultData}) => {
-    const {resultText, game_over} = gameResultData;
-    const [gameResultState, setGameResultState] = useState(initState);
-    const [isRunningInterval, setIsRunningInterval] = useState(true);
-    const [isRunningInterval_1, setIsRunningInterval_1] = useState(false);
-
+const GameResult = ({resultText}) => {
+    const {game_over} = useSelector(state => state.worldReducer);
+    const {bgVolume, effectVolume} = useSelector(state => state.settingReducer);
     const {gameInit} = useActions();
 
-    let interval = null, interval_1 = null;
+    const gameOverAudio = new Audio(game_over_bgm);
+    const clickAudio = new Audio(click);
 
     useEffect(() => {
-        if (gameResultState.height >= MAP_HEIGHT) {
-            setIsRunningInterval(false);
+        gameOverAudio.volume = bgVolume;
+        gameOverAudio.play();
+
+        window.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mousedown', handleMouseDown);
         }
-    }, [gameResultState]);
+    }, []);
 
-    useEffect(() => {
-        if (isRunningInterval) {
-            interval = setInterval(() => {
-                setGameResultState(gameResultState => ({
-                    ...gameResultState,
-                    height: gameResultState.height + 50
-                }));
-            }, 50);
+    const handleKeyDown = (e) => {
+        e.preventDefault();
+        switch (e.keyCode) {
+            case 13:
+                return gameRestart();
         }
-        else {
-            setGameResultState(gameResultState => ({
-                ...gameResultState,
-                height: MAP_HEIGHT
-            }))
-            clearInterval(interval);
-            setIsRunningInterval_1(true);
-        }
-        
-        return () => clearInterval(interval);
-    }, [isRunningInterval]);
+    }
 
-    useEffect(() => {
-        if (isRunningInterval_1)
-            interval_1 = setInterval(() => moveHeader(), 500);
-        return () => clearInterval(interval_1);
-    }, [isRunningInterval_1]);
-
-    const moveHeader = () => {
-        const random1 = Math.random();
-        const random2 = Math.random();
-
-        const newPos = [random1*500, random2*480];
-        setGameResultState(gameResultState => ({
-            ...gameResultState,
-            position: newPos
-        }))
+    const handleMouseDown = () => {
+        gameRestart();
     };
 
     const gameRestart = () => {
+        clickAudio.volume = effectVolume;
         clickAudio.play();
         gameInit();
     };
 
     return (
-        <div className='game-result-container' style={{
-            // height: gameResultState.height,
-            // width: MAP_WIDTH,
-            color: game_over? 'red':'green'
-        }}>
-            <h1 style={{
-                position: 'relative',
-                top: gameResultState.position[1],
-                left: gameResultState.position[0],
-            }}>{resultText}</h1>
-            <Button onClick={() => gameRestart()}>RESTART</Button>
+        <div className='game-result-container' style={{color: game_over? 'red':'green'}}>
+            {game_over?
+                <Fragment>
+                    <div className='result-text'>GAME</div>
+                    <div className='result-text'>OVER</div>
+                </Fragment>:
+                <Fragment>
+                    <div className='result-text'>YOU</div>
+                    <div className='result-text'>WIN</div>
+                </Fragment>
+            }
         </div>
     )
 };

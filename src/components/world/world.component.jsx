@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, Fragment} from 'react';
 import {useActions} from '../../store/hooks/useActions';
 import {useSelector} from 'react-redux';
 
@@ -20,7 +20,7 @@ import {tiles} from '../../config/maps/map_1';
 import bgm from '../../assets/sounds/bgm.mp3';
 import shoot_by_player from '../../assets/sounds/shoot_by_player.mp3';
 import short_of_time_bgm from '../../assets/sounds/short_of_time_bgm.mp3';
-import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
+// import game_over_bgm from '../../assets/sounds/game_over_bgm.mp3';
 import game_win_bgm from '../../assets/sounds/game_win_bgm.mp3';
 
 import enemyTank from '../../assets/tank/enemyTank.png';
@@ -42,7 +42,7 @@ const World = () => {
     const effectVolume = useSelector(state => state.settingReducer.effectVolume);
 
     // const bgmAudio = new Audio(bgm);
-    const gameOverAudio = new Audio(game_over_bgm);
+    // const gameOverAudio = new Audio(game_over_bgm);
     const gameWinAudio = new Audio(game_win_bgm);
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
@@ -122,7 +122,7 @@ const World = () => {
             // });
 
             setTiles(setupTiles(tiles));
-
+            
             const playerState = {
                 position: [280, 460],
                 spriteLocation: '0px 60px',
@@ -160,15 +160,15 @@ const World = () => {
     useEffect(() => {
         if (game_over || game_win) {
             bgmAudioInit();
-            game_over && gameOverAudio.play();
+            // game_over && gameOverAudio.play();
             game_win && gameWinAudio.play();
         }
         else {
             gameWinAudio.pause();
             gameWinAudio.currentTime = 0;
 
-            gameOverAudio.pause();
-            gameOverAudio.currentTime = 0;
+            // gameOverAudio.pause();
+            // gameOverAudio.currentTime = 0;
         }
             
     }, [game_over, game_win]);
@@ -184,12 +184,12 @@ const World = () => {
         bgmAudio.currentTime = 0;
     };
 
-    const getGameResultData = () => {
-        return {
-            resultText: game_over? 'Gameover':'You Win',
-            game_over: game_over
-        }
-    };
+    // const getGameResultData = () => {
+    //     return {
+    //         resultText: game_over? 'Gameover':'You Win',
+    //         game_over: game_over
+    //     }
+    // };
 
     const obeserveImpassable = (newPos, tiles) => {
         const y = newPos[1] / SPRITE_SIZE;
@@ -282,13 +282,16 @@ const World = () => {
             <div className='playground-container'>
                 {game_start? 
                     <>
-                        <Map />
-                        {(!game_pause && player.position.length > 0) && 
-                            <Player player={{...player, rotate:rotate, posRatio:posRatio}} 
-                                fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>}
-                        {!game_pause && tanks.map(tank =>
-                            <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
-                        {(game_over || game_win) && <GameResult gameResultData={getGameResultData()} />}
+                        {(!game_over && !game_win) && <Fragment>
+                            <Map />
+                            {(!game_pause && player.position.length > 0) && 
+                                <Player player={{...player, rotate:rotate, posRatio:posRatio}} 
+                                    fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>}
+                            {!game_pause && tanks.map(tank =>
+                                <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
+                        </Fragment>}
+                        
+                        {(game_over || game_win) && <GameResult />}
                         <StateBar />
                     </>
                     :
