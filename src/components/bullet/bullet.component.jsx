@@ -114,12 +114,12 @@ const Bullet = ({bullet}) => {
             case 5:
                 releaseBoom(tiles, x, y);
                 break;
-            case 10:
-                FLAG_POSITION.map((row, index) => 
-                    tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
-                setTiles(tiles);
-                gameOverTotal();
-                break;
+            // case 10:
+            //     FLAG_POSITION.map((row, index) => 
+            //         tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
+            //     setTiles(tiles);
+            //     gameOverTotal();
+            //     break;
             case 12:
                 releaseBoom(tiles, x, y);
                 // const findStarAudio = new Audio(find_star);
