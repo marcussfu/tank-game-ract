@@ -76,7 +76,7 @@ const Bullet = ({bullet}) => {
         const x = newPos[0] / SPRITE_SIZE;
         const nextTile = tiles[y][x]
         // hitTank(tiles, newPos, x, y);
-        hitPlayer(tiles, newPos, x, y);
+        // hitPlayer(tiles, newPos, x, y);
         changeTiles(tiles, newPos, x, y);
         return nextTile < 5;
     };
