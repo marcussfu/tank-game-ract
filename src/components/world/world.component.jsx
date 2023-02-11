@@ -114,10 +114,11 @@ const World = () => {
         if (!game_start)
             bgmAudioInit();
         else {
-            bgmAudio.src = bgm;
-            bgmAudio.load();
-            bgmAudio.play();
-            bgmAudio.loop = true;
+            // bgmAudio.src = bgm;
+            // bgmAudio.load();
+            // bgmAudio.play();
+            // bgmAudio.loop = true;
+
             // setBgmAudio(bgmAudio => {
             //     bgmAudio.src = bgm;
             //     bgmAudio.load();
@@ -282,9 +283,9 @@ const World = () => {
                     <>
                         {(!game_over && !game_win) && <Fragment>
                             <Map />
-                            {(!game_pause && player.position.length > 0) && 
+                            {/* {(!game_pause && player.position.length > 0) && 
                                 <Player player={{...player, rotate:rotate, posRatio:posRatio}} 
-                                    fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>}
+                                    fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>} */}
                             {!game_pause && tanks.map(tank =>
                                 <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                         </Fragment>}

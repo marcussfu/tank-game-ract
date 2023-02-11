@@ -75,7 +75,7 @@ const Bullet = ({bullet}) => {
         const y = newPos[1] / SPRITE_SIZE;
         const x = newPos[0] / SPRITE_SIZE;
         const nextTile = tiles[y][x]
-        hitTank(tiles, newPos, x, y);
+        // hitTank(tiles, newPos, x, y);
         hitPlayer(tiles, newPos, x, y);
         changeTiles(tiles, newPos, x, y);
         return nextTile < 5;
@@ -137,8 +137,8 @@ const Bullet = ({bullet}) => {
     };
 
     const releaseBoom = (tiles, x, y) => {
-        const crashAudio = new Audio(crash);
-        crashAudio.play();
+        // const crashAudio = new Audio(crash);
+        // crashAudio.play();
 
         const forest = tiles[y][x] === 1? true: false;
         tiles[y][x] = 9;
