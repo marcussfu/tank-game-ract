@@ -1,11 +1,13 @@
-import {ADD_PLAYER, MOVE_PLAYER, HIDE_PLAYER} from '../../config/types'
+import {ADD_PLAYER, MOVE_PLAYER, HIDE_PLAYER, IS_SHOOTED_PLAYER} from '../../config/types'
 
 const initState = {
     position: [],
     direction: '',
-    spriteLocation: '',
+    // spriteLocation: '',
     walkIndex: 0,
-    bullets: []
+    hidden: true,
+    isShooted: false,
+    // bullets: []
 
     // position: [280, 460],
     // spriteLocation: '0px 60px',
@@ -17,13 +19,18 @@ const initState = {
 export const playerReducer = (state=initState, action) => {
     switch(action.type) {
         case ADD_PLAYER:
-            return {...action.payload};
+            return {...state, ...action.payload};
         case MOVE_PLAYER:
-            return {...action.payload};
+            return {...state, ...action.payload};
         case HIDE_PLAYER:
             return {
                 ...state,
-                hidden: true
+                hidden: action.payload
+            }
+        case IS_SHOOTED_PLAYER:
+            return {
+                ...state,
+                isShooted: action.payload
             }
         default:
             return state;

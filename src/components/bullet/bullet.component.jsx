@@ -22,7 +22,7 @@ const Bullet = ({bullet}) => {
     const {setTiles, updateTiles, 
         removeTank, removeTanks,
         gameOver, gameWin, hidePlayer,
-        removeBullet,
+        removeBullet, isShootedPlayer,
     } = useActions();
 
     const [bulletStates, setBulletStates] = useState({
@@ -54,8 +54,11 @@ const Bullet = ({bullet}) => {
             heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
         });
 
-        if (!(obeserveBoundaries(bulletStates.position) && obeserveImpassable(bulletStates.position)))
+        if (!(obeserveBoundaries(bulletStates.position) && obeserveImpassable(bulletStates.position))) {
             setIsRunningInterval(false);
+            if (bulletStates.is_player)
+                isShootedPlayer(false);
+        }
     }, [bulletStates]);
 
     const tick = () => {

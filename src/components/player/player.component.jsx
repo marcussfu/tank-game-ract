@@ -1,20 +1,25 @@
 import {useSelector} from 'react-redux';
 import {useActions} from '../../store/hooks/useActions';
 import { useState, useEffect } from 'react';
-
 import {getCurrentPosition, obeserveBoundaries, directionToRotateDegree} from '../../config/functions';
 import store from '../../store/store';
+
 import playerTank from '../../assets/tank/playerTank.png';
 
 import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import './player.styles.scss';
 
-const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
-    const {position, direction, spriteLocation, walkIndex, rotate, posRatio} = player;
-    const [hidden, setHidden] = useState(true);
+const Player = ({posRatio, fireHandler, moveHandler, stopHandler}) => {
+    const {position, direction, walkIndex, hidden, isShooted} = useSelector(state => state.playerReducer);
+    const tiles = useSelector(state => state.mapReducer.tiles);
+    const {setTiles, removeTanks, gameWin, movePlayer, hidePlayer, isShootedPlayer, setBullet} = useActions();
+    
+    const [rotate, setRotate] = useState(0);
+    const [moveQueue, setMoveQueue] = useState([]);
+    const [newDir, setNewDir] = useState('');
+    const [moveSpeed, setMoveSpeed] = useState(200);
 
     useEffect(() => {
-        setHidden(false);
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
         return () => {
@@ -22,23 +27,111 @@ const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
             window.removeEventListener('keyup', handleKeyUp);
         }
     }, []);
+
+    let interval_newDir = null;
+
+    useEffect(() => {
+        if (direction !== '') 
+            hidePlayer(false);
+    }, [direction])
+
+    useEffect(() => {
+        if (moveQueue.length > 0)
+            attemptMove(moveQueue.shift());
+    }, [moveQueue]);
+
+    useEffect(() => {
+        if (newDir !== '') {
+            setMoveQueue(moveQueue => [...moveQueue, newDir]);
+            interval_newDir = setInterval(() => {
+                setMoveQueue(moveQueue => [...moveQueue, newDir]);
+            }, moveSpeed);
+        }
+
+        return () => {
+            setMoveQueue([]);
+            clearInterval(interval_newDir);
+        }
+    }, [newDir, moveSpeed]);
+
+    useEffect(() => {
+        console.log("KKKKKKKKK   ", isShooted);
+        if (isShooted) {
+            setBullet({
+                position: getCurrentPosition(direction, position),
+                direction: direction,
+                key_index: 'tank_player_Bullet_',
+                is_player: true
+            });
+        }
+    }, [isShooted]);
+
+    const attemptMove = (dir) => {
+        setRotate(directionToRotateDegree(dir));
+        const newPos = getCurrentPosition(dir, position);
+        
+        dispatchMove(dir, 
+            (obeserveBoundaries(newPos) && obeserveImpassable(newPos, tiles)? 
+                newPos: position));
+    }
+
+    const obeserveImpassable = (newPos, tiles) => {
+        const y = newPos[1] / SPRITE_SIZE;
+        const x = newPos[0] / SPRITE_SIZE;
+        const nextTile = tiles[y][x];
+        
+        if (nextTile === 4) {
+            tiles[y][x] = 0;
+            setTiles(tiles);
+            gameWin();
+            removeTanks();
+        }
+        return nextTile < 5;
+    };
+
+    function dispatchMove(dir, pos) {
+        const newWalkIndex = walkIndex >= 1? 0: walkIndex+1;
+        
+        movePlayer({
+            position: pos,
+            direction: dir,
+            walkIndex: newWalkIndex
+        });
+    }
+
+    const fireBullet = () => {
+        // console.log("FFFFFF    ", isShooted, hidden);
+        // isShootedPlayer(true);
+
+        // if (currBulletCount <= 0) return;
+        // setBullet({
+        //     position: getCurrentPosition(player.direction, player.position),//player.position,
+        //     direction: player.direction,
+        //     key_index: 'tank_player_Bullet_' + currBulletCount,
+        //     is_player: true
+        // });
+        // const shootByPlayerAudio = new Audio(shoot_by_player);
+        // shootByPlayerAudio.volume = effectVolume;
+        // shootByPlayerAudio.play();
+    }
     
     const handleKeyDown = (e) => {
         e.preventDefault();
         // get current state
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
+            // console.log("keydown   ", e.keyCode);
             switch (e.keyCode) {
-                // case 32:
-                //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
+                // case 32: case 13:
+                //     return isShootedPlayer(true);//setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 case 37: case 65:
-                    return moveHandler('WEST');
+                    return setNewDir('WEST');
                 case 38: case 87:
-                    return moveHandler('NORTH');
+                    return setNewDir('NORTH');
                 case 39: case 68:
-                    return moveHandler('EAST');
+                    return setNewDir('EAST');
                 case 40: case 83:
-                    return moveHandler('SOUTH');
+                    return setNewDir('SOUTH');
                 // default:
                 //     return console.log(e.keyCode);
             }
@@ -50,10 +143,13 @@ const Player = ({player, fireHandler, moveHandler, stopHandler}) => {
         // get current state
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
-            stopHandler();
+            // console.log("keyup   ", e.keyCode);
+            // stopHandler();
             switch (e.keyCode) {
+                case 37: case 65: case 38: case 87: case 39: case 68: case 40: case 83:
+                    return setNewDir('');
                 case 32: case 13:
-                    return fireHandler();
+                    return isShootedPlayer(true);
                 //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 // default:
                 //     return console.log(e.keyCode);
