@@ -5,11 +5,13 @@ import {useActions} from '../../store/hooks/useActions';
 import {Joystick} from 'react-joystick-component';
 
 import './control-panel.styles.scss';
-import { Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 
 const ControlPanel = ({type}) => {
     const {game_over, game_win, game_start, game_pause} = useSelector(state => state.worldReducer);
     const {isShootedPlayer, setNewDir} = useActions();
+
+    const [newDirState, setNewDirState] = useState('');
 
     const moveKeys = {
         'LEFT': 'WEST',
@@ -18,12 +20,16 @@ const ControlPanel = ({type}) => {
         'BACKWARD': 'SOUTH'
     }
 
+    useEffect(() => {
+        setNewDir(newDirState);
+    }, [newDirState]);
+
     const moveHandler = (direction) => {
-        setNewDir(direction);
+        setNewDirState(direction);
     };
 
     const stopHandler = () => {
-        setNewDir('');
+        setNewDirState('');
     };
 
     const fireHandler = () => {
