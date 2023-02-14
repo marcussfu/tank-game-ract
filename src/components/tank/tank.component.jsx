@@ -69,7 +69,9 @@ const Tank = ({tank}) => {
             setBullet({
                 position: getCurrentPosition(tankStates.direction, tankStates.position),
                 direction: tankStates.direction,
-                key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount
+                key_index: tankStates.key_index + '_Bullet_' + tankStates.bulletShootedCount,
+                is_player: false,
+                display: true
             });
         }
     }, [toFire]);

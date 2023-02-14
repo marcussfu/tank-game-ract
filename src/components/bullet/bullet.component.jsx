@@ -18,21 +18,22 @@ const Bullet = ({bullet}) => {
     const tiles = useSelector(state => state.mapReducer.tiles);
     const tanks = useSelector(state => state.tankReducer.tanks);
     const player = useSelector(state => state.playerReducer);
+    // const bullets = useSelector(state => state.bulletsReducer.bullets);
 
-    const {setTiles, updateTiles, 
-        removeTank, removeTanks,
-        gameOver, gameWin, hidePlayer,
-        removeBullet, isShootedPlayer,
+    const {setTiles, updateTiles, removeTank, removeTanks,
+        gameOver, gameWin, hidePlayer, removeBullet, isShootedPlayer,
+        moveBullet
     } = useActions();
 
     const [bulletStates, setBulletStates] = useState({
         ...bullet, 
         rotate: directionToRotateDegree(bullet.direction),
-        is_player: bullet.is_player? true:false,
-        display: false});
+    });
 
     const [isRunningInterval, setIsRunningInterval] = useState(true);
     const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
+    // const [filteredBullets, setFilterBullets] = useState([]);
+
     let interval = null;
     
     useEffect(() => {
@@ -53,12 +54,20 @@ const Bullet = ({bullet}) => {
             widthRatio: document.getElementsByClassName('bullets-container')[0].offsetWidth/MAP_WIDTH,
             heightRatio: document.getElementsByClassName('bullets-container')[0].offsetHeight/MAP_HEIGHT
         });
-
+        
+        let isDisplay = true;
         if (!(obeserveBoundaries(bulletStates.position) && obeserveImpassable(bulletStates.position))) {
-            setIsRunningInterval(false);
-            if (bulletStates.is_player)
-                isShootedPlayer(false);
+            isDisplay = false;
+            setIsRunningInterval(isDisplay);
+            if (bulletStates.is_player) {console.log("LLLLLLL   ", bulletStates.key_index, bulletStates.is_player, isDisplay);
+                isShootedPlayer(isDisplay);
+            }
         }
+        moveBullet({
+            position: bulletStates.position,
+            display: isDisplay,
+            key_index: bulletStates.key_index
+        })
     }, [bulletStates]);
 
     const tick = () => {
@@ -69,23 +78,25 @@ const Bullet = ({bullet}) => {
     };
 
     const gameOverTotal = () => {
-        gameOver();
-        removeTanks();
-        removeBullet();
+        setTimeout(() => {
+            gameOver();
+            removeTanks();
+            removeBullet();
+        }, 500);
     };
 
     const obeserveImpassable = (newPos) => {
         const y = newPos[1] / SPRITE_SIZE;
         const x = newPos[0] / SPRITE_SIZE;
         const nextTile = tiles[y][x]
-        // hitTank(tiles, newPos, x, y);
-        // hitPlayer(tiles, newPos, x, y);
+        hitTank(tiles, newPos, x, y);
+        hitPlayer(tiles, newPos, x, y);
         changeTiles(tiles, newPos, x, y);
         return nextTile < 5;
     };
 
     const hitTank = (tiles, newPos, x, y) => {
-        if (!tanks) return;
+        if (!tanks || !bullet.is_player) return;
         tanks.forEach(tank => {
             if (JSON.stringify(tank.position) === JSON.stringify(newPos)) {
                 console.log('hit tank', tank.key_index);
@@ -102,7 +113,7 @@ const Bullet = ({bullet}) => {
     };
 
     const hitPlayer = (tiles, newPos, x, y) => {
-        if (bulletStates.is_player) return;
+        if (bullet.is_player) return;
         if (JSON.stringify(player.position) === JSON.stringify(newPos)) {
             console.log('hit player at', newPos);
             releaseBoom(tiles, x, y);
@@ -117,12 +128,12 @@ const Bullet = ({bullet}) => {
             case 5:
                 releaseBoom(tiles, x, y);
                 break;
-            // case 10:
-            //     FLAG_POSITION.map((row, index) => 
-            //         tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
-            //     setTiles(tiles);
-            //     gameOverTotal();
-            //     break;
+            case 10:
+                FLAG_POSITION.map((row, index) => 
+                    tiles[row[0]][row[1]] = 11 + 0.1*(index+1))
+                setTiles(tiles);
+                gameOverTotal();
+                break;
             case 12:
                 releaseBoom(tiles, x, y);
                 // const findStarAudio = new Audio(find_star);

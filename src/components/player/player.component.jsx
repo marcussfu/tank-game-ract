@@ -18,6 +18,7 @@ const Player = () => {
     const [moveQueue, setMoveQueue] = useState([]);
     const [moveSpeed, setMoveSpeed] = useState(200);
     const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
+    const [bulletShootedCount, setBulletShootedCount] = useState(0);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -60,16 +61,28 @@ const Player = () => {
     }, [newDir, moveSpeed]);
 
     useEffect(() => {
-        console.log("KKKKKKKKK   ", isShooted);
         if (isShooted) {
+            setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
+            // setBullet({
+            //     position: getCurrentPosition(direction, position),
+            //     direction: direction,
+            //     key_index: 'player1_',
+            //     is_player: true
+            // });
+        }
+    }, [isShooted]);
+
+    useEffect(() => {
+        if (bulletShootedCount > 0){
             setBullet({
                 position: getCurrentPosition(direction, position),
                 direction: direction,
-                key_index: 'tank_player_Bullet_',
-                is_player: true
+                key_index: 'player1_' + bulletShootedCount,
+                is_player: true,
+                display: true
             });
         }
-    }, [isShooted]);
+    }, [bulletShootedCount])
 
     const attemptMove = (dir) => {
         setRotate(directionToRotateDegree(dir));
@@ -125,10 +138,7 @@ const Player = () => {
         // get current state
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
-            // console.log("keydown   ", e.keyCode);
             switch (e.keyCode) {
-                // case 32: case 13:
-                //     return isShootedPlayer(true);//setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 case 37: case 65:
                     return setNewDir('WEST');
                 case 38: case 87:
@@ -148,14 +158,11 @@ const Player = () => {
         // get current state
         if (!store.getState().worldReducer.game_over && 
             !store.getState().worldReducer.game_win) {
-            // console.log("keyup   ", e.keyCode);
-            // stopHandler();
             switch (e.keyCode) {
                 case 37: case 65: case 38: case 87: case 39: case 68: case 40: case 83:
                     return setNewDir('');
                 case 32: case 13:
                     return isShootedPlayer(true);
-                //     return setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
                 // default:
                 //     return console.log(e.keyCode);
             }

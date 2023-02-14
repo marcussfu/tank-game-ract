@@ -19,7 +19,7 @@ export const SET_NEW_DIR = 'SET_NEW_DIR';
 // bullet action
 export const ADD_BULLET = 'ADD_BULLET';
 export const REMOVE_BULLET = 'REMOVE_BULLET';
-export const ADD_LAST_BULLET_FRAME_ID = 'ADD_LAST_BULLET_FRAME_ID';
+export const MOVE_BULLET = 'MOVE_BULLET';
 
 // world action
 export const GAME_OVER = 'GAME_OVER';
