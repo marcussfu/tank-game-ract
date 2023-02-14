@@ -1,4 +1,4 @@
-import {ADD_PLAYER, HIDE_PLAYER, MOVE_PLAYER, IS_SHOOTED_PLAYER} from '../../config/types';
+import {ADD_PLAYER, HIDE_PLAYER, MOVE_PLAYER, IS_SHOOTED_PLAYER, SET_NEW_DIR} from '../../config/types';
 
 export const addPlayer = (player) => ({
     type: ADD_PLAYER,
@@ -17,5 +17,10 @@ export const hidePlayer = (player) => ({
 
 export const isShootedPlayer = (player) => ({
     type: IS_SHOOTED_PLAYER,
+    payload: player
+});
+
+export const setNewDir = (player) => ({
+    type: SET_NEW_DIR,
     payload: player
 });

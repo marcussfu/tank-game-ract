@@ -45,52 +45,35 @@ const World = () => {
 
     const [bgmAudio, setBgmAudio] = useState(new Audio(bgm));
 
-    const moveKeys = {
-        'LEFT': 'WEST',
-        'FORWARD': 'NORTH',
-        'RIGHT': 'EAST',
-        'BACKWARD': 'SOUTH'
-    }
+    // const moveKeys = {
+    //     'LEFT': 'WEST',
+    //     'FORWARD': 'NORTH',
+    //     'RIGHT': 'EAST',
+    //     'BACKWARD': 'SOUTH'
+    // }
 
     const [newDir, setNewDir] = useState('');
     const [bulletShootedCount, setBulletShootedCount] = useState(0);
     const [rotate, setRotate] = useState(0);
-    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
+    // const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
     const [isRunningInterval, setIsRunningInterval] = useState(false);
 
     let player_move_interval = null;
 
     // useEffect(() => {
-    //     // setPosRatio({
-    //     //     widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
-    //     //     heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
-    //     // });
+    //     console.log("RRRRRRRR    ", newDir);
+    //     // setIsRunningInterval(newDir === ''? false: true);
+    // }, [newDir]);
 
-    //     if (isRunningInterval) {
-    //         player_move_interval = setInterval(() => {
-    //             attemptMove(newDir);
-    //         }, 150);
-    //     }
-    //     else 
-    //         clearInterval(player_move_interval);
-            
-    //     return () => clearInterval(player_move_interval);
-    // }, [isRunningInterval, player]);
+    // useEffect(() => {
+    //     fireBullet(bulletShootedCount);
+    // }, [bulletShootedCount]);
 
-    useEffect(() => {
-        console.log("RRRRRRRR    ", newDir);
-        // setIsRunningInterval(newDir === ''? false: true);
-    }, [newDir]);
-
-    useEffect(() => {
-        fireBullet(bulletShootedCount);
-    }, [bulletShootedCount]);
-
-    useEffect(() => {
-        bgmAudio.volume = bgVolume;
-        // setBgmAudio(bgmAudio => bgmAudio.volume = bgVolume);
-    }, [bgVolume]);
+    // useEffect(() => {
+    //     bgmAudio.volume = bgVolume;
+    //     // setBgmAudio(bgmAudio => bgmAudio.volume = bgVolume);
+    // }, [bgVolume]);
 
     useEffect(() => {
         if (short_of_time) {
@@ -106,10 +89,10 @@ const World = () => {
     }, [short_of_time]);
 
     useEffect(() => {
-        setPosRatio({
-            widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
-            heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
-        });
+        // setPosRatio({
+        //     widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
+        //     heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
+        // });
         // setRotate(0);
 
         if (!game_start)
@@ -194,93 +177,82 @@ const World = () => {
     //     }
     // };
 
-    const obeserveImpassable = (newPos, tiles) => {
-        const y = newPos[1] / SPRITE_SIZE;
-        const x = newPos[0] / SPRITE_SIZE;
-        const nextTile = tiles[y][x];
+    // const obeserveImpassable = (newPos, tiles) => {
+    //     const y = newPos[1] / SPRITE_SIZE;
+    //     const x = newPos[0] / SPRITE_SIZE;
+    //     const nextTile = tiles[y][x];
         
-        if (nextTile === 4) {
-            tiles[y][x] = 0;
-            setTiles(tiles);
-            gameWin();
-            removeTanks();
-        }
-        return nextTile < 5;
-    };
+    //     if (nextTile === 4) {
+    //         tiles[y][x] = 0;
+    //         setTiles(tiles);
+    //         gameWin();
+    //         removeTanks();
+    //     }
+    //     return nextTile < 5;
+    // };
 
-    function dispatchMove(dir, pos) {
-        const newWalkIndex = player.walkIndex >= 1? 0: player.walkIndex+1;
-        const newSpriteLocation = getSpriteLocation(dir, newWalkIndex);
+    // function dispatchMove(dir, pos) {
+    //     const newWalkIndex = player.walkIndex >= 1? 0: player.walkIndex+1;
+    //     const newSpriteLocation = getSpriteLocation(dir, newWalkIndex);
         
-        movePlayer({
-            position: pos,
-            direction: dir,
-            spriteLocation: newSpriteLocation,
-            walkIndex: newWalkIndex
-        });
-    }
+    //     movePlayer({
+    //         position: pos,
+    //         direction: dir,
+    //         spriteLocation: newSpriteLocation,
+    //         walkIndex: newWalkIndex
+    //     });
+    // }
 
-    const getSpriteLocation = (direction, walkIndex) => {
-        switch(direction) {
-            case 'SOUTH':
-                return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*0}px`
-            case 'EAST':
-                return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*1}px`
-            case 'WEST':
-                return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*2}px`
-            case 'NORTH':
-                return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*3}px`
-            default:
-                return "0px 0px"
-        }
-    }
+    // const getSpriteLocation = (direction, walkIndex) => {
+    //     switch(direction) {
+    //         case 'SOUTH':
+    //             return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*0}px`
+    //         case 'EAST':
+    //             return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*1}px`
+    //         case 'WEST':
+    //             return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*2}px`
+    //         case 'NORTH':
+    //             return `${SPRITE_SIZE*walkIndex}px ${SPRITE_SIZE*3}px`
+    //         default:
+    //             return "0px 0px"
+    //     }
+    // }
     
-    const moveHandler = (direction) => {
-        setNewDir(direction);
-    };
+    // const moveHandler = (direction) => {
+    //     setNewDir(direction);
+    // };
 
-    const stopHandler = () => {
-        setNewDir('');
-    };
+    // const stopHandler = () => {
+    //     setNewDir('');
+    // };
 
-    const fireHandler = () => {
-        setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
-    };
+    // const fireHandler = () => {
+    //     setBulletShootedCount(bulletShootedCount => bulletShootedCount+1);
+    // };
 
-    
-
-    const fireBullet = (currBulletCount) => {
-        if (currBulletCount <= 0) return;
-        setBullet({
-            position: getCurrentPosition(player.direction, player.position),//player.position,
-            direction: player.direction,
-            key_index: 'tank_player_Bullet_' + currBulletCount,
-            is_player: true
-        });
-        const shootByPlayerAudio = new Audio(shoot_by_player);
-        shootByPlayerAudio.volume = effectVolume;
-        shootByPlayerAudio.play();
-    }
+    // const fireBullet = (currBulletCount) => {
+    //     if (currBulletCount <= 0) return;
+    //     setBullet({
+    //         position: getCurrentPosition(player.direction, player.position),//player.position,
+    //         direction: player.direction,
+    //         key_index: 'tank_player_Bullet_' + currBulletCount,
+    //         is_player: true
+    //     });
+    //     const shootByPlayerAudio = new Audio(shoot_by_player);
+    //     shootByPlayerAudio.volume = effectVolume;
+    //     shootByPlayerAudio.play();
+    // }
 
     return (
         <div className='world-container'>
-            <ControlPanel>
-                <Joystick
-                    size={80}
-                    baseColor="hsl(219, 84%, 56%)"
-                    stickColor="hsl(219, 84%, 30%)"
-                    move={(e) => moveHandler(moveKeys[e.direction])}
-                    stop={stopHandler}
-                ></Joystick>
-            </ControlPanel>
+            <ControlPanel type='move' />
             <div className='playground-container'>
                 {game_start? 
                     <>
                         {(!game_over && !game_win) && <Fragment>
                             <Map />
                             {(!game_pause && player.position.length > 0) && 
-                                <Player posRatio={posRatio} 
-                                    fireHandler={fireHandler} moveHandler={moveHandler} stopHandler={stopHandler}/>}
+                                <Player />}
                             {!game_pause && tanks.map(tank =>
                                 <Tank key={tank.key_index} tank={{...tank, imageUrl: enemyTank}} />)}
                         </Fragment>}
@@ -294,11 +266,7 @@ const World = () => {
                     </>
                 }
             </div>
-            <ControlPanel>
-                <div className='fire-handler' onClick={() => fireHandler()}>
-                    FIRE      
-                </div>
-            </ControlPanel>
+            <ControlPanel type='fire' />
         </div>
     )
 }

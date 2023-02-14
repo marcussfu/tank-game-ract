@@ -9,15 +9,15 @@ import playerTank from '../../assets/tank/playerTank.png';
 import {SPRITE_SIZE, MAP_HEIGHT, MAP_WIDTH} from '../../config/constants';
 import './player.styles.scss';
 
-const Player = ({posRatio, fireHandler, moveHandler, stopHandler}) => {
-    const {position, direction, walkIndex, hidden, isShooted} = useSelector(state => state.playerReducer);
+const Player = () => {
+    const {position, direction, walkIndex, hidden, isShooted, newDir} = useSelector(state => state.playerReducer);
     const tiles = useSelector(state => state.mapReducer.tiles);
-    const {setTiles, removeTanks, gameWin, movePlayer, hidePlayer, isShootedPlayer, setBullet} = useActions();
+    const {setTiles, removeTanks, gameWin, movePlayer, hidePlayer, setBullet, isShootedPlayer, setNewDir} = useActions();
     
     const [rotate, setRotate] = useState(0);
     const [moveQueue, setMoveQueue] = useState([]);
-    const [newDir, setNewDir] = useState('');
     const [moveSpeed, setMoveSpeed] = useState(200);
+    const [posRatio, setPosRatio] = useState({widthRatio: 1, heightRatio: 1});
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -31,6 +31,11 @@ const Player = ({posRatio, fireHandler, moveHandler, stopHandler}) => {
     let interval_newDir = null;
 
     useEffect(() => {
+        setPosRatio({
+            widthRatio: document.getElementsByClassName('playground-container')[0].offsetWidth/MAP_WIDTH,
+            heightRatio: document.getElementsByClassName('playground-container')[0].offsetHeight/MAP_HEIGHT
+        });
+
         if (direction !== '') 
             hidePlayer(false);
     }, [direction])

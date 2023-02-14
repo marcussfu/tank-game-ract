@@ -14,6 +14,7 @@ export const ADD_PLAYER = 'ADD_PLAYER';
 export const HIDE_PLAYER = 'HIDE_PLAYER';
 export const MOVE_PLAYER = 'MOVE_PLAYER';
 export const IS_SHOOTED_PLAYER = 'IS_SHOOTED_PLAYER';
+export const SET_NEW_DIR = 'SET_NEW_DIR';
 
 // bullet action
 export const ADD_BULLET = 'ADD_BULLET';

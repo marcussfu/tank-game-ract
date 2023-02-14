@@ -1,4 +1,4 @@
-import {ADD_PLAYER, MOVE_PLAYER, HIDE_PLAYER, IS_SHOOTED_PLAYER} from '../../config/types'
+import {ADD_PLAYER, MOVE_PLAYER, HIDE_PLAYER, IS_SHOOTED_PLAYER, SET_NEW_DIR} from '../../config/types'
 
 const initState = {
     position: [],
@@ -7,6 +7,7 @@ const initState = {
     walkIndex: 0,
     hidden: true,
     isShooted: false,
+    newDir: '',
     // bullets: []
 
     // position: [280, 460],
@@ -31,6 +32,11 @@ export const playerReducer = (state=initState, action) => {
             return {
                 ...state,
                 isShooted: action.payload
+            }
+        case SET_NEW_DIR:
+            return {
+                ...state,
+                newDir: action.payload
             }
         default:
             return state;
