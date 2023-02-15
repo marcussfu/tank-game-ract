@@ -20,6 +20,8 @@ export const SET_NEW_DIR = 'SET_NEW_DIR';
 export const ADD_BULLET = 'ADD_BULLET';
 export const REMOVE_BULLET = 'REMOVE_BULLET';
 export const MOVE_BULLET = 'MOVE_BULLET';
+export const REMOVE_SPECIFIC_BULLET = 'REMOVE_SPECIFIC_BULLET';
+export const REMOVE_UNDISPLAY_BULLET = 'REMOVE_UNDISPLAY_BULLET';
 
 // world action
 export const GAME_OVER = 'GAME_OVER';

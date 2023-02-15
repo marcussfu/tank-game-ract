@@ -22,7 +22,7 @@ const Bullet = ({bullet}) => {
 
     const {setTiles, updateTiles, removeTank, removeTanks,
         gameOver, gameWin, hidePlayer, removeBullet, isShootedPlayer,
-        moveBullet
+        removeSpecificBullet, moveBullet
     } = useActions();
 
     const [bulletStates, setBulletStates] = useState({
@@ -59,15 +59,18 @@ const Bullet = ({bullet}) => {
         if (!(obeserveBoundaries(bulletStates.position) && obeserveImpassable(bulletStates.position))) {
             isDisplay = false;
             setIsRunningInterval(isDisplay);
-            if (bulletStates.is_player) {console.log("LLLLLLL   ", bulletStates.key_index, bulletStates.is_player, isDisplay);
+            if (bulletStates.is_player) {
+                // console.log("LLLLLLL   ", bulletStates.key_index, bulletStates.is_player, isDisplay);
                 isShootedPlayer(isDisplay);
             }
+            // console.log("want to remove   ", bulletStates.key_index, bulletStates.is_player);
+            // removeSpecificBullet(bulletStates.key_index);
         }
-        moveBullet({
-            position: bulletStates.position,
-            display: isDisplay,
-            key_index: bulletStates.key_index
-        })
+        // moveBullet({
+        //     position: bulletStates.position,
+        //     display: isDisplay,
+        //     key_index: bulletStates.key_index
+        // })
     }, [bulletStates]);
 
     const tick = () => {

@@ -73,7 +73,7 @@ const Player = () => {
     }, [isShooted]);
 
     useEffect(() => {
-        if (bulletShootedCount > 0){
+        if (bulletShootedCount > 0) {console.log("player shoot   ", 'player1_' + bulletShootedCount);
             setBullet({
                 position: getCurrentPosition(direction, position),
                 direction: direction,

@@ -14,7 +14,7 @@ const Timing = () => {
     const {game_over, game_win} = useSelector(state => state.worldReducer);
     const [timeValue, settimeValue] = useState(TIME_LIMIT);
 
-    const {gameOver, removeTanks, removeBullet, shortOfTime, setTank} = useActions();
+    const {gameOver, removeTanks, removeBullet, shortOfTime, setTank, removeUndisplayBullet} = useActions();
 
     let interval = null;
 
@@ -42,8 +42,12 @@ const Timing = () => {
             removeBullet();
         }
 
-        if (timeValue < 180 && timeValue > 0 && timeValue % 60 === 0)
-            createEnemyTank();
+        if (timeValue < 180 && timeValue > 0) {
+            // if (timeValue % 30 === 0)
+            //     removeUndisplayBullet();
+            if (timeValue % 60 === 0)
+                createEnemyTank();
+        }
     }, [timeValue]);
 
     const createEnemyTank = () => {

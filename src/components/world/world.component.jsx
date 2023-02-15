@@ -81,17 +81,17 @@ const World = () => {
                 key_index: Date.now()
             });
 
-            // setTank({
-            //     position: [780,460],
-            //     direction: 'NORTH',
-            //     key_index: Date.now()+1
-            // });
+            setTank({
+                position: [780,460],
+                direction: 'NORTH',
+                key_index: Date.now()+1
+            });
 
-            // setTank({
-            //     position: [740,0],
-            //     direction: 'WEST',
-            //     key_index: Date.now()+2
-            // });
+            setTank({
+                position: [740,0],
+                direction: 'WEST',
+                key_index: Date.now()+2
+            });
         }
     }, [game_start]);
 
