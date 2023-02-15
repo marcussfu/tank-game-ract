@@ -3,9 +3,24 @@ import {useSelector} from 'react-redux';
 import {useActions} from '../../store/hooks/useActions';
 
 import {Joystick} from 'react-joystick-component';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
 import './control-panel.styles.scss';
 import { useState, useEffect, Fragment } from 'react';
+
+const FireButton = styled(Button)({
+    fontFamily: 'Pixeloid',
+    color: 'black',
+    borderRadius: '50%',
+    width: '80px',
+    height: '80px',
+    right: '2.5%',
+    backgroundColor: 'darkturquoise',
+    '&:hover': {
+        backgroundColor: 'darkcyan',
+    },
+});
 
 const ControlPanel = ({type}) => {
     const {game_over, game_win, game_start, game_pause} = useSelector(state => state.worldReducer);
@@ -48,9 +63,7 @@ const ControlPanel = ({type}) => {
                         stop={stopHandler}
                     ></Joystick>
                     :
-                    <div className='fire-handler' onClick={fireHandler}>
-                        FIRE      
-                    </div>}
+                    <FireButton variant="contained" onClick={fireHandler}>FIRE</FireButton>}
                 </div>
             }
         </Fragment>
