@@ -20,6 +20,8 @@
 
 在開發模式執行這個app
 
+已經deployment到網頁上[Tank War](https://tank-game-react.pages.dev/)
+
 ## 操作
 可以透過鍵盤操作上下左右，WASD也可以移動坦克
 
